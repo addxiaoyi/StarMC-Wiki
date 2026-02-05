@@ -1,0 +1,8 @@
+{
+  "name": "Copy of 舵星归途 StarMC Wiki",
+  "description": "一个为舵星归途 StarMC 服务器设计的现代化、AI 驱动的技术文档与百科平台。支持 Markdown 渲染、智能搜索及实时 AI 助手。",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

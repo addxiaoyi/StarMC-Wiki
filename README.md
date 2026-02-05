@@ -1,2 +1,1 @@
-# StarMC-Wiki
-MINECRAFT SERVER WIKI
+wiki 
