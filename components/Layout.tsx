@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Search, Github, Terminal, Book, ChevronRight, ExternalLink } from 'lucide-react';
 import { NAVIGATION, SERVER_NAME, OFFICIAL_WEBSITE } from '../constants';
-import AIChatbot from './AIChatbot';
+ 
 
 export const Header: React.FC<{ onOpenSearch: () => void }> = ({ onOpenSearch }) => (
   <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
@@ -117,7 +117,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </main>
       </div>
 
-      <AIChatbot />
+      
       
       {isSearchOpen && (
         <div className="fixed inset-0 z-[60] flex items-start justify-center pt-20 px-4 bg-slate-900/40 backdrop-blur-sm">
