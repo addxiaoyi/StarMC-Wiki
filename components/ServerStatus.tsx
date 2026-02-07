@@ -14,26 +14,64 @@ interface StatusData {
 export const ServerStatus: React.FC = () => {
   const [status, setStatus] = useState<StatusData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [onlineFlag, setOnlineFlag] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const fetchStatus = async () => {
+    const cache = (() => {
       try {
-        const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IPS.primary}`);
-        const data = await res.json();
-        setStatus({
-          online: data.online,
-          players: data.players
-        });
+        const raw = localStorage.getItem('server_status_cache');
+        return raw ? JSON.parse(raw) as StatusData & { ts: number } : null;
+      } catch { return null; }
+    })();
+
+    const fetchStatus = async () => {
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 5000);
+      try {
+        const hosts = [SERVER_IPS.primary, SERVER_IPS.secondary];
+        const requests = hosts.map(h => 
+          fetch(`https://api.mcsrvstat.us/3/${h}`, { signal: controller.signal })
+            .then(r => r.json())
+            .catch(() => null)
+        );
+        const results = await Promise.all(requests);
+        const ok = results.find(d => d && d.online);
+        if (ok) {
+          setStatus({ online: true, players: ok.players });
+          setOnlineFlag(true);
+          try {
+            localStorage.setItem('server_status_cache', JSON.stringify({ online: true, players: ok.players, ts: Date.now() }));
+          } catch {}
+        } else {
+          setOnlineFlag(navigator.onLine ? false : null);
+          if (cache) {
+            setStatus({ online: cache.online, players: cache.players });
+          } else {
+            setStatus({ online: false });
+          }
+        }
       } catch (err) {
         console.error("Failed to fetch server status", err);
+        setOnlineFlag(navigator.onLine ? false : null);
+        if (cache) {
+          setStatus({ online: cache.online, players: cache.players });
+        } else {
+          setStatus({ online: false });
+        }
       } finally {
+        clearTimeout(t);
         setLoading(false);
       }
     };
 
     fetchStatus();
     const interval = setInterval(fetchStatus, 60000);
-    return () => clearInterval(interval);
+    const onOnline = () => fetchStatus();
+    window.addEventListener('online', onOnline);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('online', onOnline);
+    };
   }, []);
 
   if (loading) {
@@ -45,7 +83,7 @@ export const ServerStatus: React.FC = () => {
     );
   }
 
-  if (!status?.online) {
+  if (!status?.online || onlineFlag === false) {
     return (
       <div className="flex items-center gap-3 px-4 py-2 bg-rose-50 border border-rose-100 rounded-2xl">
         <WifiOff size={14} className="text-rose-400" />

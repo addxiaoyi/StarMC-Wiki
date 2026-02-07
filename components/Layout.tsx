@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Search, Github, Terminal, Book, ChevronRight, ExternalLink } from 'lucide-react';
 import { NAVIGATION, SERVER_NAME, OFFICIAL_WEBSITE } from '../constants';
  
+import { search as doSearch } from '../services/searchEngine';
 
 export const Header: React.FC<{ onOpenSearch: () => void }> = ({ onOpenSearch }) => (
   <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
@@ -95,6 +96,20 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [results, setResults] = useState<{ slug: string; title: string; score: number; snippet: string }[]>([]);
+  const [total, setTotal] = useState(0);
+  const pageSize = 20;
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      const r = doSearch(query, page, pageSize);
+      setResults(r.results);
+      setTotal(r.total);
+    }, 100);
+    return () => clearTimeout(id);
+  }, [query, page]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -127,16 +142,57 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <input 
                 autoFocus
                 type="text" 
-                placeholder="输入关键字搜索文档，支持自然语言提问..." 
+                value={query}
+                onChange={e => { setQuery(e.target.value); setPage(1); }}
+                placeholder="输入关键字搜索文档（支持模糊匹配与高亮）" 
                 className="flex-1 outline-none text-lg text-slate-900 placeholder:text-slate-300"
               />
               <button onClick={() => setSearchOpen(false)} className="text-slate-400 hover:text-slate-600">
                 <X size={20} />
               </button>
             </div>
-            <div className="p-8 text-center text-slate-400">
-              <div className="mb-2"><Book size={32} className="mx-auto opacity-20" /></div>
-              <p>输入内容后，Gemini 3 Flash 将为您快速查找...</p>
+            <div className="p-4">
+              {query.trim() === '' ? (
+                <div className="p-8 text-center text-slate-400">
+                  <div className="mb-2"><Book size={32} className="mx-auto opacity-20" /></div>
+                  <p>请输入关键词开始搜索</p>
+                </div>
+              ) : (
+                <>
+                  <ul className="space-y-3 max-h-[400px] overflow-y-auto">
+                    {results.map(r => (
+                      <li key={r.slug} className="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
+                        <Link to={`/wiki/${r.slug}`} className="font-bold text-slate-900">
+                          {r.title}
+                        </Link>
+                        <div className="mt-1 text-sm text-slate-600" dangerouslySetInnerHTML={{ __html: r.snippet }} />
+                      </li>
+                    ))}
+                    {results.length === 0 && (
+                      <li className="p-8 text-center text-slate-400">无匹配结果</li>
+                    )}
+                  </ul>
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="text-xs text-slate-500">共 {total} 条</div>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        disabled={page <= 1}
+                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50"
+                      >
+                        上一页
+                      </button>
+                      <button 
+                        disabled={page * pageSize >= total}
+                        onClick={() => setPage(p => p + 1)}
+                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50"
+                      >
+                        下一页
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
