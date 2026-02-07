@@ -120,7 +120,7 @@ const Home: React.FC = () => {
           </div>
           <div className="space-y-6">
             {[
-              { date: "2025.12.01", title: "维基接入 Gemini 3 AI 助手服务" },
+              { date: "2025.12.01", title: "维基站点搜索体验优化（关键词高亮与分页）" },
               { date: "2025.11.20", title: "官方网站 star-web.top 正式上线" },
               { date: "2025.11.18", title: "添加实时服务器状态监控功能" },
             ].map((update, i) => (
