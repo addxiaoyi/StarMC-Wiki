@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Search, Github, Terminal, Book, ChevronRight, ExternalLink } from 'lucide-react';
 import { NAVIGATION, SERVER_NAME, OFFICIAL_WEBSITE } from '../constants';

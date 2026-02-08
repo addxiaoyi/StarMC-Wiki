@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Printer, Edit3 } from 'lucide-react';
+import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3 } from 'lucide-react';
 import { MOCK_PAGES } from '../constants';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
 
@@ -61,9 +61,6 @@ const WikiPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <button className="p-2 text-slate-400 hover:text-slate-900 transition-colors" title="分享">
             <Share2 size={20} />
-          </button>
-          <button className="p-2 text-slate-400 hover:text-slate-900 transition-colors" title="打印">
-            <Printer size={20} />
           </button>
           <button className="flex items-center gap-2 ml-4 px-4 py-2 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all">
             <Edit3 size={16} />
