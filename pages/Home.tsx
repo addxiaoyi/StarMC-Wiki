@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, BookOpen, ChevronRight, Copy, ExternalLink, Terminal, Globe, Zap, Check } from 'lucide-react';
 import { SERVER_NAME, SERVER_IPS, OFFICIAL_WEBSITE } from '../constants';
@@ -37,6 +37,10 @@ const Home: React.FC = () => {
           </Link>
           <a href={OFFICIAL_WEBSITE} target="_blank" rel="noreferrer" className="px-10 py-4 bg-white border border-slate-200 text-slate-600 font-bold rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2">
             官方网站
+            <ExternalLink size={18} />
+          </a>
+          <a href="https://status.s3.fan/s/starmc" target="_blank" rel="noreferrer" className="px-10 py-4 bg-white border border-slate-200 text-slate-600 font-bold rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2">
+            服务器状态
             <ExternalLink size={18} />
           </a>
         </div>
@@ -118,18 +122,7 @@ const Home: React.FC = () => {
             </div>
             <h2 className="text-2xl font-black text-slate-900">最近动态</h2>
           </div>
-          <div className="space-y-6">
-            {[
-              { date: "2025.12.01", title: "维基站点搜索体验优化（关键词高亮与分页）" },
-              { date: "2025.11.20", title: "官方网站 star-web.top 正式上线" },
-              { date: "2025.11.18", title: "添加实时服务器状态监控功能" },
-            ].map((update, i) => (
-              <div key={i} className="flex gap-6 p-4 hover:bg-slate-50 rounded-2xl transition-all group">
-                <div className="text-xs font-black text-slate-300 font-mono pt-1 group-hover:text-slate-900 transition-colors">{update.date}</div>
-                <div className="text-sm font-bold text-slate-600 leading-snug">{update.title}</div>
-              </div>
-            ))}
-          </div>
+          <RecentCommits />
         </div>
       </div>
 
@@ -147,6 +140,44 @@ const Home: React.FC = () => {
           </p>
         </div>
       </footer>
+    </div>
+  );
+};
+
+const RecentCommits: React.FC = () => {
+  const [items, setItems] = useState<{ date: string; title: string; url: string }[]>([]);
+  useEffect(() => {
+    const fetchCommits = async () => {
+      try {
+        const res = await fetch('https://api.github.com/repos/addxiaoyi/StarMC-Wiki/commits?per_page=5');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          const list = data.map((c: any) => ({
+            date: new Date(c.commit.author.date).toISOString().slice(0, 10).replace(/-/g, '.'),
+            title: c.commit.message.split('\n')[0],
+            url: c.html_url
+          }));
+          setItems(list);
+        } else {
+          setItems([]);
+        }
+      } catch {
+        setItems([]);
+      }
+    };
+    fetchCommits();
+  }, []);
+  return (
+    <div className="space-y-6">
+      {items.length === 0 ? (
+        <div className="p-6 text-center text-slate-400">暂无最新提交，稍后再试</div>
+      ) : items.map((update, i) => (
+        <a key={i} href={update.url} target="_blank" rel="noreferrer" className="flex gap-6 p-4 hover:bg-slate-50 rounded-2xl transition-all group">
+          <div className="text-xs font-black text-slate-300 font-mono pt-1 group-hover:text-slate-900 transition-colors">{update.date}</div>
+          <div className="text-sm font-bold text-slate-600 leading-snug">{update.title}</div>
+          <ExternalLink size={16} className="ml-auto text-slate-300 group-hover:text-slate-900" />
+        </a>
+      ))}
     </div>
   );
 };

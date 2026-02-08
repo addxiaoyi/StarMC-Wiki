@@ -6,8 +6,8 @@ export const OFFICIAL_WEBSITE = "https://star-web.top";
 export const GITHUB_DOCS_PATH = "(docs)";
 
 export const SERVER_IPS = {
-  primary: "play.star-mc.top",
-  secondary: "mc.star-mc.top",
+  primary: "mc.star-mc.top",
+  secondary: "play.star-mc.top",
   mod: "mod.star-mc.top"
 };
 
@@ -18,6 +18,7 @@ export const NAVIGATION: NavItem[] = [
       { title: "服务器简介", path: "/wiki/intro" },
       { title: "加入教程", path: "/wiki/join" },
       { title: "服务器规范", path: "/wiki/rules" },
+      { title: "公告与服务器指南", path: "/wiki/announcement" },
     ]
   },
   {
@@ -39,6 +40,79 @@ export const NAVIGATION: NavItem[] = [
 ];
 
 export const MOCK_PAGES: WikiPage[] = [
+  {
+    id: "announcement",
+    slug: "announcement",
+    title: "公告与服务器指南",
+    category: "新手入门",
+    lastUpdated: "2026-02-08",
+    content: `# 公告与服务器指南
+
+> 群文件可以下载东西❗
+
+## 官网与状态
+- 服务器官网（制作中）：https://star-web.top
+- 服务器状态页：https://status.s3.fan/s/starmc
+
+## 通用测试服
+- pm.rainplay.cn:56586
+
+## 连接线路
+- 主线路：\`${SERVER_IPS.primary}\`
+- 备用线路：\`${SERVER_IPS.secondary}\`
+- 模组服：\`${SERVER_IPS.mod}\`
+
+## 版本与跨服
+- 插件群组服 IP 在另一个公告（支持跨版本，推荐使用 1.21.8 进入所有服务器）
+- 提示：进入提示需要密码且没有注册选项？
+  - 正版玩家：请联系管理
+  - 离线登录：请更换一个未被注册的名字（密码为你自行设置，请妥善保管）
+
+## 服务器矩阵
+1. Pylon 科技生存服（等待中）1.21.8（预计年底到明年春节开放）
+2. 纯生存服（运行中）更新至 1.21.10（不出意外存档不更换）
+3. 空岛粘液科技生存服（运行中）1.21.4
+4. 小游戏（大致完善，更新中）1.20.4（暂时使用 Shift+F 打开跨服传送）
+5. 诺娜大陆（开发中）1.21.4
+6. 无尽地牢（运行中）1.21.1
+7. 无政府国战（权力宝石之争）（运行中）1.21.8
+
+## 模组相关
+2. 不定时模组服：star-web.top 下载群内模组端游玩（运行中）
+3. 模组枪战服：gun.star-mc.top（开发中）
+4. 舵星归途 RPG：star-mc.top（开发中）
+
+## 领地插件教程
+### 第一步：圈地创建领地
+1. 准备工具：拿出 **木锄头**（选区专用工具）
+2. 选择区域：
+   - 左键点击领地的一个对角（如房子左下角或地底最深处）
+   - 右键点击另一个对角（如房子右上角或天空最高处）
+   - 计费根据体积大小决定
+3. 创建领地：选中区域后输入：
+   - \`/res create [你的领地名字]\`
+   - 例子：\`/res create MyHouse\`
+
+### 第二步：管理你的领地
+1. 添加/移除信任玩家
+   - 添加：\`/res padd [你的领地名字] [朋友ID]\`
+   - 移除：\`/res remove [你的领地名字] [朋友ID]\`
+   - 小贴士：站在领地中时可省略领地名，默认为当前所在领地
+2. 设置领地权限（Flags）
+   - 格式：\`/res set [你的领地名字] [权限名] [t/f]\`
+
+### 第三步：实用命令
+- 传送到领地：\`/res tp [你的领地名字]\`
+- 重命名领地：\`/res rename [旧名字] [新名字]\`
+- 删除领地：\`/res delete [你的领地名字]\`
+- 重要提示：\`[]\` 为占位符，需要替换为你的实际内容
+- 查看限制：\`/res limits\` 查看还能创建多少个领地
+
+## 社区与文档
+- Discord 频道：https://discord.gg/tZHTRKYzHh
+- FCL 启动器教程（腾讯文档）：https://docs.qq.com/doc/DZXBvd3N0WnhGU1Vr
+`
+  },
   {
     id: "intro",
     slug: "intro",
