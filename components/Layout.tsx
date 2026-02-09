@@ -94,6 +94,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 };
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -101,6 +102,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [results, setResults] = useState<{ slug: string; title: string; score: number; snippet: string }[]>([]);
   const [total, setTotal] = useState(0);
   const pageSize = 20;
+
+  const isAdminPage = location.pathname.includes('/admin');
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -116,18 +119,20 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       <Header onOpenSearch={() => setSearchOpen(true)} />
       
       <div className="flex-1 flex flex-col md:flex-row max-w-8xl mx-auto w-full">
-        <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
+        {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />}
         
-        <main className="flex-1 min-w-0 bg-white">
-          <div className="md:hidden p-4 border-b border-slate-100">
-            <button 
-              onClick={() => setSidebarOpen(true)}
-              className="flex items-center gap-2 text-sm font-medium text-slate-600"
-            >
-              <Menu size={20} />
-              目录
-            </button>
-          </div>
+        <main className={`flex-1 min-w-0 bg-white ${isAdminPage ? 'w-full' : ''}`}>
+          {!isAdminPage && (
+            <div className="md:hidden p-4 border-b border-slate-100">
+              <button 
+                onClick={() => setSidebarOpen(true)}
+                className="flex items-center gap-2 text-sm font-medium text-slate-600"
+              >
+                <Menu size={20} />
+                目录
+              </button>
+            </div>
+          )}
           {children}
         </main>
       </div>
