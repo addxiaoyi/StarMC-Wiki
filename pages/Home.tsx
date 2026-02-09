@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Compass, BookOpen, ChevronRight, Copy, ExternalLink, Terminal, Globe, Zap, Check } from 'lucide-react';
 import { SERVER_NAME, SERVER_IPS, OFFICIAL_WEBSITE } from '../constants';
 import { ServerStatus } from '../components/ServerStatus';
+import { FileContribution } from '../components/FileContribution';
 
 const Home: React.FC = () => {
   const [copied, setCopied] = useState<string | null>(null);
@@ -122,6 +123,10 @@ const Home: React.FC = () => {
             <h2 className="text-2xl font-black text-slate-900">最近动态</h2>
           </div>
           <RecentCommits />
+          
+          <div className="pt-10">
+            <FileContribution />
+          </div>
         </div>
       </div>
 
@@ -134,8 +139,9 @@ const Home: React.FC = () => {
           <p className="text-slate-400 text-sm font-medium">
             官网: <a href={OFFICIAL_WEBSITE} className="text-slate-500 hover:text-slate-900 underline underline-offset-4 decoration-slate-200 hover:decoration-slate-900 transition-all">{OFFICIAL_WEBSITE}</a>
           </p>
-          <p className="text-slate-300 text-[10px] uppercase font-bold tracking-widest">
-            StarMC Wiki Project
+          <p className="text-slate-300 text-[10px] uppercase font-bold tracking-widest flex items-center gap-4">
+            <span>StarMC Wiki Project</span>
+            <Link to="/admin/review" className="hover:text-slate-900 transition-colors">管理入口</Link>
           </p>
         </div>
       </footer>
@@ -148,7 +154,13 @@ const RecentCommits: React.FC = () => {
   useEffect(() => {
     const fetchCommits = async () => {
       try {
-        const res = await fetch('https://api.github.com/repos/addxiaoyi/StarMC-Wiki/commits?per_page=5');
+        // 使用 cache: 'no-store' 确保获取最新数据，避免 API 缓存
+        const res = await fetch('https://api.github.com/repos/addxiaoyi/StarMC-Wiki/commits?per_page=5', {
+          cache: 'no-store',
+          headers: {
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
         const data = await res.json();
         if (Array.isArray(data)) {
           const list = data.map((c: any) => ({
@@ -160,13 +172,14 @@ const RecentCommits: React.FC = () => {
         } else {
           setItems([]);
         }
-      } catch {
+      } catch (err) {
+        console.error('Fetch commits failed:', err);
         setItems([]);
       }
     };
-    fetchCommits(); // Initial fetch
-    const interval = setInterval(fetchCommits, 30000); // Fetch every 30 seconds
-    return () => clearInterval(interval); // Cleanup on unmount
+    fetchCommits();
+    const interval = setInterval(fetchCommits, 60000); // 调整为每分钟检查一次，避免触发 GitHub API 速率限制
+    return () => clearInterval(interval);
   }, []);
   return (
     <div className="space-y-6">

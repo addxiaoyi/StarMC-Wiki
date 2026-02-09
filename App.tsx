@@ -4,6 +4,7 @@ import { HashRouter as Router, Routes, Route, Navigate, useLocation } from 'reac
 import { Layout } from './components/Layout';
 import Home from './pages/Home';
 import WikiPage from './pages/WikiPage';
+import AdminReview from './pages/AdminReview';
 import EntranceAnimation from './components/EntranceAnimation';
 
 const ScrollToTop = () => {
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/wiki/:slug" element={<WikiPage />} />
+            <Route path="/admin/review" element={<AdminReview />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Layout>
