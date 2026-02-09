@@ -3,7 +3,6 @@
 ## 服务器地址
 - 主线路：play.star-mc.top
 - 备用线路：mc.star-mc.top
-- 模组服：mod.star-mc.top
 
 ## 客户端版本
 - 使用 1.21.11 或 1.21.x

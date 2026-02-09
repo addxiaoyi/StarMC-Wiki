@@ -59,8 +59,7 @@ const Home: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             { label: "主连接线路", ip: SERVER_IPS.primary, icon: <Zap className="text-amber-500" /> },
-            { label: "备用连接线路", ip: SERVER_IPS.secondary, icon: <Globe className="text-blue-500" /> },
-            { label: "模组服专用", ip: SERVER_IPS.mod, icon: <Terminal className="text-purple-500" /> }
+            { label: "备用连接线路", ip: SERVER_IPS.secondary, icon: <Globe className="text-blue-500" /> }
           ].map((item, i) => (
             <div key={i} className="relative group p-8 bg-white border border-slate-100 rounded-[2rem] hover:border-slate-300 hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 flex flex-col items-center">
               <div className="mb-6 p-4 bg-slate-50 rounded-2xl group-hover:scale-110 group-hover:bg-white transition-all duration-500">{item.icon}</div>
@@ -165,7 +164,9 @@ const RecentCommits: React.FC = () => {
         setItems([]);
       }
     };
-    fetchCommits();
+    fetchCommits(); // Initial fetch
+    const interval = setInterval(fetchCommits, 30000); // Fetch every 30 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
   return (
     <div className="space-y-6">

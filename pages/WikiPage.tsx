@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, Navigate, Link, useLocation } from 'react-router-dom';
 import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3 } from 'lucide-react';
 import { MOCK_PAGES } from '../constants';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
@@ -8,6 +8,30 @@ import { MarkdownRenderer } from '../components/MarkdownRenderer';
 const WikiPage: React.FC = () => {
   const { slug } = useParams();
   const page = MOCK_PAGES.find(p => p.slug === slug);
+  const location = useLocation();
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const shareUrl = window.location.origin + location.pathname;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: page?.title || 'StarMC Wiki',
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (error) {
+        console.error('Error copying to clipboard:', error);
+      }
+    }
+  };
 
   if (!page) {
     return <Navigate to="/" replace />;
@@ -59,13 +83,27 @@ const WikiPage: React.FC = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <button className="p-2 text-slate-400 hover:text-slate-900 transition-colors" title="分享">
+          <button 
+            className="p-2 text-slate-400 hover:text-slate-900 transition-colors relative" 
+            title="分享"
+            onClick={handleShare}
+          >
             <Share2 size={20} />
+            {copied && (
+              <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                已复制!
+              </span>
+            )}
           </button>
-          <button className="flex items-center gap-2 ml-4 px-4 py-2 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all">
+          <a 
+            href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/src/branch/main/docs/${page.slug}.md`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 ml-4 px-4 py-2 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all"
+          >
             <Edit3 size={16} />
             编辑此页
-          </button>
+          </a>
         </div>
       </footer>
 
