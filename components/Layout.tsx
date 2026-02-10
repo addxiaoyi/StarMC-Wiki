@@ -240,13 +240,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </div>
 
       {!isAdminPage && (
-        <button
-          onClick={() => setSearchOpen(true)}
-          className="md:hidden fixed bottom-6 right-6 z-50 p-4 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center"
-          aria-label="Floating Search"
-        >
-          <Search size={24} />
-        </button>
+        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-3rem)] max-w-sm">
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="w-full flex items-center gap-3 px-5 py-3.5 bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl shadow-2xl shadow-blue-500/10 dark:bg-slate-900/90 dark:border-slate-800 dark:shadow-none text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-[0.98]"
+            aria-label="Floating Search Bar"
+          >
+            <Search size={20} className="text-blue-500" />
+            <span className="text-sm font-semibold tracking-wide">搜索文档内容...</span>
+            <div className="ml-auto bg-slate-100 px-2 py-0.5 rounded text-[10px] font-bold text-slate-400 dark:bg-slate-800">
+              GO
+            </div>
+          </button>
+        </div>
       )}
 
       {isSearchOpen && (
