@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, BookOpen, ChevronRight, Copy, ExternalLink, Terminal, Globe, Zap, Check } from 'lucide-react';
 import { SERVER_NAME, SERVER_IPS, OFFICIAL_WEBSITE } from '../constants';
-import { ServerStatus } from '../components/ServerStatus';
 import { FileContribution } from '../components/FileContribution';
 
 const Home: React.FC = () => {
@@ -20,7 +19,13 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <section className="text-center mb-24">
         <div className="inline-flex items-center justify-center mb-10">
-          <ServerStatus />
+          <div className="flex items-center gap-3 px-4 py-2 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl shadow-slate-200/50 animate-in fade-in zoom-in duration-700">
+            <div className="relative">
+              <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+              <div className="absolute inset-0 w-1.5 h-1.5 bg-blue-400 rounded-full animate-ping" />
+            </div>
+            <span className="text-[10px] font-black text-white uppercase tracking-widest">Documentation Hub</span>
+          </div>
         </div>
         
         <h1 className="text-6xl lg:text-8xl font-black tracking-tighter text-slate-900 mb-8">
