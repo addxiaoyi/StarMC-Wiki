@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Navigate, Link, useLocation } from 'react-router-dom';
-import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List } from 'lucide-react';
+import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List, History } from 'lucide-react';
 import { MOCK_PAGES } from '../constants';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
 import { WikiPage as WikiPageType } from '../types';
@@ -286,17 +286,26 @@ const WikiPage: React.FC = () => {
                   </span>
                 )}
               </button>
-              {isAdmin && (
-                <a 
-                  href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/src/branch/main/public/content/wiki/${slug}.md`} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 ml-4 px-4 py-2 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all dark:bg-blue-950 dark:text-blue-400 dark:hover:bg-blue-900"
-                >
-                  <Edit3 size={16} />
-                  编辑此页 (MD)
-                </a>
-              )}
+              
+              <a 
+                href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/commits/branch/main/public/content/wiki/${slug}.md`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
+                title="查看变更历史"
+              >
+                <History size={20} />
+              </a>
+
+              <a 
+                href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/src/branch/main/public/content/wiki/${slug}.md`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 ml-2 px-4 py-2 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all dark:bg-blue-950 dark:text-blue-400 dark:hover:bg-blue-900"
+              >
+                <Edit3 size={16} />
+                编辑此页 (MD)
+              </a>
             </div>
           </footer>
         </div>

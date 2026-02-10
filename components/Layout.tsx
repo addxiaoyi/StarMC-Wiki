@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Github, Terminal, Book, ChevronRight, ExternalLink, Moon, Sun } from 'lucide-react';
+import { Menu, X, Search, Github, Terminal, Book, ChevronRight, ExternalLink, Moon, Sun, Settings } from 'lucide-react';
 import { NAVIGATION, SERVER_NAME, OFFICIAL_WEBSITE } from '../constants';
  
 import { search as doSearch } from '../services/searchEngine';
@@ -21,6 +21,14 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
+          {/* 管理入口按钮 */}
+          <Link
+            to="/admin/review"
+            className="p-2 text-slate-600 bg-slate-100 rounded-lg dark:text-slate-300 dark:bg-slate-800 hover:text-blue-600 transition-colors"
+            title="管理后台"
+          >
+            <Settings size={20} />
+          </Link>
           {/* 移动端搜索按钮 - 强制显示 */}
           <button
             onClick={(e) => { e.preventDefault(); onOpenSearch(); }}
@@ -146,7 +154,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
       if (saved) return saved === 'dark';
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // 默认返回 false，即亮色模式
+      return false;
     }
     return false;
   });
