@@ -46,10 +46,34 @@ export const NAVIGATION: NavItem[] = [
       { title: "生存手册", path: "/wiki/guide-survival" },
       { title: "无脑教程文档", path: "/wiki/guide-no-brain" },
     ]
+  },
+  {
+    title: "开发者与贡献者",
+    items: [
+      { title: "贡献指南", path: "/wiki/contributing" },
+    ]
   }
 ];
 
 export const MOCK_PAGES: WikiPage[] = [
+  {
+    id: "contributing",
+    slug: "contributing",
+    title: "贡献指南与 MD 规范",
+    category: "开发者与贡献者",
+    lastUpdated: "2026-02-10",
+    content: "",
+    icon: "📝"
+  },
+  {
+    id: "template",
+    slug: "template",
+    title: "Wiki 页面基础模板",
+    category: "开发者与贡献者",
+    lastUpdated: "2026-02-10",
+    content: "",
+    icon: "📄"
+  },
   {
     id: "announcement",
     slug: "announcement",

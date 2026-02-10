@@ -1,18 +1,50 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Navigate, Link, useLocation } from 'react-router-dom';
-import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2 } from 'lucide-react';
+import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers } from 'lucide-react';
 import { MOCK_PAGES } from '../constants';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
+import { WikiPage as WikiPageType } from '../types';
 
 const WikiPage: React.FC = () => {
   const { slug } = useParams();
-  const pageInfo = MOCK_PAGES.find(p => p.slug === slug);
   const location = useLocation();
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [meta, setMeta] = useState<Partial<WikiPageType>>({});
+
+  // 基础信息
+  const basePageInfo = MOCK_PAGES.find(p => p.slug === slug);
+
+  // 解析 MD 中的元数据
+  const parseMetadata = (text: string) => {
+    const metaMatch = text.match(/<!--([\s\S]*?)-->/);
+    if (!metaMatch) return { cleanContent: text, metadata: {} };
+
+    const metaStr = metaMatch[1];
+    const metadata: any = {};
+    const lines = metaStr.split('\n');
+    
+    lines.forEach(line => {
+      const parts = line.split(':');
+      if (parts.length >= 2) {
+        const key = parts[0].trim().toUpperCase();
+        const value = parts.slice(1).join(':').trim();
+        if (key === 'TITLE') metadata.title = value;
+        if (key === 'CATEGORY') metadata.category = value;
+        if (key === 'LAST_UPDATED') metadata.lastUpdated = value;
+        if (key === 'PARENT') metadata.parent = value;
+        if (key === 'ICON') metadata.icon = value;
+      }
+    });
+
+    return {
+      cleanContent: text.replace(metaMatch[0], '').trim(),
+      metadata
+    };
+  };
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -20,16 +52,17 @@ const WikiPage: React.FC = () => {
       setLoading(true);
       setError(false);
       try {
-        // 尝试从 public/content/wiki 目录加载 MD 文件
         const response = await fetch(`${window.location.origin}${window.location.pathname.startsWith('/starmc-wiki-page') ? '/starmc-wiki-page' : ''}/content/wiki/${slug}.md`);
         if (!response.ok) throw new Error('Failed to load markdown');
         const text = await response.text();
-        setContent(text);
+        
+        const { cleanContent, metadata } = parseMetadata(text);
+        setContent(cleanContent);
+        setMeta(metadata);
       } catch (err) {
         console.error('Error fetching markdown:', err);
-        // 如果加载失败，尝试使用备用内容（如果 constants.ts 中还有的话）
-        if (pageInfo?.content) {
-          setContent(pageInfo.content);
+        if (basePageInfo?.content) {
+          setContent(basePageInfo.content);
         } else {
           setError(true);
         }
@@ -39,14 +72,28 @@ const WikiPage: React.FC = () => {
     };
 
     fetchContent();
-  }, [slug, pageInfo]);
+  }, [slug, basePageInfo]);
+
+  // 合并元数据
+  const displayInfo = useMemo(() => ({
+    ...basePageInfo,
+    ...meta,
+    title: meta.title || basePageInfo?.title || slug,
+    category: meta.category || basePageInfo?.category || '文档',
+    lastUpdated: meta.lastUpdated || basePageInfo?.lastUpdated || '2026-02-10',
+  }), [basePageInfo, meta, slug]);
+
+  // 获取子页面 (通过 parent 字段)
+  const subPages = useMemo(() => {
+    return MOCK_PAGES.filter(p => p.parent === slug);
+  }, [slug]);
 
   const handleShare = async () => {
     const shareUrl = window.location.origin + location.pathname;
     if (navigator.share) {
       try {
         await navigator.share({
-          title: pageInfo?.title || 'StarMC Wiki',
+          title: displayInfo?.title || 'StarMC Wiki',
           url: shareUrl,
         });
       } catch (error) {
@@ -63,7 +110,7 @@ const WikiPage: React.FC = () => {
     }
   };
 
-  if (!pageInfo && !loading) {
+  if (!basePageInfo && !loading && !meta.title) {
     return <Navigate to="/" replace />;
   }
 
@@ -97,9 +144,9 @@ const WikiPage: React.FC = () => {
       <nav className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-8 overflow-x-auto whitespace-nowrap">
         <Link to="/" className="hover:text-slate-900 transition-colors">首页</Link>
         <ChevronRight size={12} />
-        <span className="text-slate-900">{pageInfo?.category || 'Wiki'}</span>
+        <span className="text-slate-900">{displayInfo?.category || 'Wiki'}</span>
         <ChevronRight size={12} />
-        <span className="text-slate-500">{pageInfo?.title || slug}</span>
+        <span className="text-slate-500">{displayInfo?.title || slug}</span>
       </nav>
 
       {/* Hero Header */}
@@ -107,15 +154,20 @@ const WikiPage: React.FC = () => {
         <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-400 mb-4">
           <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded-md">
             <Calendar size={12} />
-            最后更新: {pageInfo?.lastUpdated || '2026-02-10'}
+            最后更新: {displayInfo?.lastUpdated || '2026-02-10'}
           </div>
           <div className="flex items-center gap-1.5">
             <Tag size={12} />
-            {pageInfo?.category || '文档'}
+            {displayInfo?.category || '文档'}
           </div>
+          {displayInfo?.icon && (
+            <div className="flex items-center gap-1.5 px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md">
+              <span className="text-lg">{displayInfo.icon}</span>
+            </div>
+          )}
         </div>
         <h1 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-          {pageInfo?.title || slug}
+          {displayInfo?.title || slug}
         </h1>
       </header>
 
@@ -123,6 +175,30 @@ const WikiPage: React.FC = () => {
       <div className="relative">
         <MarkdownRenderer content={content} />
       </div>
+
+      {/* 子页面导航 (如果存在) */}
+      {subPages.length > 0 && (
+        <div className="mt-16 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100">
+          <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+            <Layers size={20} className="text-indigo-500" />
+            相关子页面
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {subPages.map(page => (
+              <Link 
+                key={page.slug}
+                to={`/wiki/${page.slug}`}
+                className="group p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-500 hover:shadow-md transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">{page.title}</span>
+                  <ChevronRight size={16} className="text-slate-300 group-hover:text-indigo-500 transition-all" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Page Footer / Controls */}
       <footer className="mt-20 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-between gap-6">
@@ -134,6 +210,22 @@ const WikiPage: React.FC = () => {
             <ArrowLeft size={16} />
             返回首页
           </Link>
+          {slug === 'template' && (
+            <button 
+              onClick={() => {
+                const blob = new Blob([`<!--\nTITLE: 这里填写页面标题\nCATEGORY: 这里填写侧边栏分类\nLAST_UPDATED: ${new Date().toISOString().split('T')[0]}\nPARENT: \nICON: 📄\n-->\n\n# 页面主标题\n\n内容编写...`], { type: 'text/markdown' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'template.md';
+                a.click();
+              }}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all"
+            >
+              <Download size={16} />
+              下载此模板
+            </button>
+          )}
         </div>
         
         <div className="flex items-center gap-2">

@@ -8,14 +8,14 @@ export interface WikiPage {
   lastUpdated: string;
   tags?: string[];
   icon?: string;
+  parent?: string; // 父页面 slug
 }
 
 export interface NavItem {
   title: string;
-  items: {
-    title: string;
-    path: string;
-  }[];
+  path?: string;
+  icon?: string;
+  items?: NavItem[];
 }
 
 export interface SearchResult {

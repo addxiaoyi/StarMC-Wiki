@@ -47,6 +47,45 @@ export const Header: React.FC<{ onOpenSearch: () => void }> = ({ onOpenSearch })
 export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const location = useLocation();
 
+  const renderNavItems = (items: any[], level = 0) => {
+    return (
+      <ul className={`space-y-1 ${level > 0 ? 'ml-4 mt-1 border-l border-slate-100 pl-2' : ''}`}>
+        {items.map((item) => {
+          const isActive = location.pathname === item.path;
+          const hasChildren = item.items && item.items.length > 0;
+
+          return (
+            <li key={item.path || item.title}>
+              {item.path ? (
+                <Link
+                  to={item.path}
+                  onClick={() => window.innerWidth < 768 && onClose()}
+                  className={`
+                    flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200
+                    ${isActive 
+                      ? 'bg-slate-100 text-slate-900 border-l-2 border-slate-900' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
+                  `}
+                >
+                  <div className="flex items-center gap-2">
+                    {item.icon && <span>{item.icon}</span>}
+                    {item.title}
+                  </div>
+                  {isActive && <ChevronRight size={14} className="text-slate-400" />}
+                </Link>
+              ) : (
+                <div className="px-3 py-2 text-sm font-bold text-slate-400 uppercase tracking-wider">
+                  {item.title}
+                </div>
+              )}
+              {hasChildren && renderNavItems(item.items, level + 1)}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
   return (
     <aside className={`
       fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block
@@ -63,28 +102,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
               <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500 px-3">
                 {section.title}
               </h3>
-              <ul className="space-y-1">
-                {section.items.map((item) => {
-                  const isActive = location.pathname === item.path;
-                  return (
-                    <li key={item.path}>
-                      <Link
-                        to={item.path}
-                        onClick={() => window.innerWidth < 768 && onClose()}
-                        className={`
-                          flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200
-                          ${isActive 
-                            ? 'bg-slate-100 text-slate-900 border-l-2 border-slate-900' 
-                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
-                        `}
-                      >
-                        {item.title}
-                        {isActive && <ChevronRight size={14} className="text-slate-400" />}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+              {renderNavItems(section.items)}
             </div>
           ))}
         </nav>
