@@ -60,7 +60,6 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
           <ExternalLink size={14} />
           官网
         </a>
-      </div>
     </div>
   </header>
 );
