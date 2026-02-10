@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Navigate, Link, useLocation } from 'react-router-dom';
-import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List, History, Upload } from 'lucide-react';
+import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List, History, Upload, ExternalLink } from 'lucide-react';
 import { MOCK_PAGES } from '../constants';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
 import { WikiPage as WikiPageType } from '../types';
