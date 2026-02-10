@@ -358,15 +358,24 @@ const WikiPage: React.FC = () => {
                 )}
               </button>
               
-              <a 
-                href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/commits/branch/main/public/content/wiki/${slug}.md`} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
-                title="查看变更历史"
-              >
-                <History size={20} />
-              </a>
+              <div className="flex items-center gap-1">
+                  <Link 
+                    to="/history"
+                    className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
+                    title="查看全站变更历史"
+                  >
+                    <History size={20} />
+                  </Link>
+                  <a 
+                    href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/commits/branch/main/public/content/wiki/${slug}.md`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
+                    title="查看此页源码历史"
+                  >
+                    <ExternalLink size={20} />
+                  </a>
+                </div>
 
               <a 
                 href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/src/branch/main/public/content/wiki/${slug}.md`} 

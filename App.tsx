@@ -5,6 +5,7 @@ import { Layout } from './components/Layout';
 import Home from './pages/Home';
 import WikiPage from './pages/WikiPage';
 import AdminReview from './pages/AdminReview';
+import GitHistory from './pages/GitHistory';
 import EntranceAnimation from './components/EntranceAnimation';
 
 const ScrollToTop = () => {
@@ -27,6 +28,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/wiki/:slug" element={<WikiPage />} />
+            <Route path="/history" element={<GitHistory />} />
             <Route path="/admin/review" element={<AdminReview />} />
             <Route path="/admin" element={<Navigate to="/admin/review" replace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
