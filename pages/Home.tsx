@@ -267,7 +267,7 @@ const Home: React.FC = () => {
               <span className="text-2xl font-black tracking-tighter dark:text-white uppercase">StarMC Wiki</span>
             </div>
             <p className="text-slate-500 dark:text-slate-400 font-medium max-w-sm">
-              致力于打造最详尽的生电生存指南。代码开源，内容共享。
+              舵星归途 StarMC 官方服务器 Wiki。致力于打造最详尽的生电生存指南。代码开源，内容共享。
             </p>
           </div>
           <div className="lg:col-span-3 space-y-4">
