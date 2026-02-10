@@ -52,8 +52,10 @@ const WikiPage: React.FC = () => {
       setLoading(true);
       setError(false);
       try {
-        const response = await fetch(`${window.location.origin}${window.location.pathname.startsWith('/starmc-wiki-page') ? '/starmc-wiki-page' : ''}/content/wiki/${slug}.md`);
-        if (!response.ok) throw new Error('Failed to load markdown');
+        // 优先尝试从 API 路径获取
+        const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+        const response = await fetch(`${baseUrl}/content/wiki/${slug}.md?v=${Date.now()}`);
+        if (!response.ok) throw new Error(`Failed to load markdown: ${response.status}`);
         const text = await response.text();
         
         const { cleanContent, metadata } = parseMetadata(text);
