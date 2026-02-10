@@ -1,40 +1,50 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Github, Terminal, Book, ChevronRight, ExternalLink } from 'lucide-react';
+import { Menu, X, Search, Github, Terminal, Book, ChevronRight, ExternalLink, Moon, Sun } from 'lucide-react';
 import { NAVIGATION, SERVER_NAME, OFFICIAL_WEBSITE } from '../constants';
  
 import { search as doSearch } from '../services/searchEngine';
 
-export const Header: React.FC<{ onOpenSearch: () => void }> = ({ onOpenSearch }) => (
-  <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
+export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggleDark: () => void }> = ({ onOpenSearch, isDark, toggleDark }) => (
+  <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:bg-slate-950/80 dark:border-slate-800">
     <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-4 sm:px-6 lg:px-8">
       <div className="flex items-center gap-4">
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="bg-slate-900 text-white p-1.5 rounded-lg transition-transform group-hover:scale-105">
+          <div className="bg-slate-900 text-white p-1.5 rounded-lg transition-transform group-hover:scale-105 dark:bg-white dark:text-slate-900">
             <Terminal size={20} />
           </div>
-          <span className="text-lg font-bold tracking-tight">{SERVER_NAME} <span className="text-slate-400 font-normal">Wiki</span></span>
+          <span className="text-lg font-bold tracking-tight dark:text-white">
+            {SERVER_NAME} <span className="text-slate-400 font-normal">Wiki</span>
+            <span className="ml-2 px-1.5 py-0.5 text-[10px] bg-blue-100 text-blue-600 rounded-full font-bold uppercase tracking-wider dark:bg-blue-900 dark:text-blue-300">MD-v2</span>
+          </span>
         </Link>
       </div>
 
       <div className="flex items-center gap-4">
+        <button
+          onClick={toggleDark}
+          className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
+          aria-label="Toggle Theme"
+        >
+          {isDark ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
         <button 
           onClick={onOpenSearch}
-          className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-slate-400 border border-slate-200 rounded-full hover:border-slate-300 transition-colors bg-slate-50"
+          className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-slate-400 border border-slate-200 rounded-full hover:border-slate-300 transition-colors bg-slate-50 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700"
         >
           <Search size={16} />
           <span>搜索文档...</span>
-          <kbd className="ml-2 font-sans text-xs bg-white px-1.5 py-0.5 rounded border border-slate-200">⌘K</kbd>
+          <kbd className="ml-2 font-sans text-xs bg-white px-1.5 py-0.5 rounded border border-slate-200 dark:bg-slate-800 dark:border-slate-700">⌘K</kbd>
         </button>
         
-        <div className="h-6 w-px bg-slate-200 mx-2" />
+        <div className="h-6 w-px bg-slate-200 mx-2 dark:bg-slate-800" />
         
         <a 
           href={OFFICIAL_WEBSITE} 
           target="_blank" 
           rel="noreferrer" 
-          className="text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1.5"
+          className="text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1.5 dark:text-slate-400 dark:hover:text-white"
         >
           <ExternalLink size={14} />
           官方网站
@@ -49,7 +59,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 
   const renderNavItems = (items: any[], level = 0) => {
     return (
-      <ul className={`space-y-1 ${level > 0 ? 'ml-4 mt-1 border-l border-slate-100 pl-2' : ''}`}>
+      <ul className={`space-y-1 ${level > 0 ? 'ml-4 mt-1 border-l border-slate-100 pl-2 dark:border-slate-800' : ''}`}>
         {items.map((item) => {
           const isActive = location.pathname === item.path;
           const hasChildren = item.items && item.items.length > 0;
@@ -63,8 +73,8 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
                   className={`
                     flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200
                     ${isActive 
-                      ? 'bg-slate-100 text-slate-900 border-l-2 border-slate-900' 
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
+                      ? 'bg-slate-100 text-slate-900 border-l-2 border-slate-900 dark:bg-slate-800 dark:text-white dark:border-white' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white'}
                   `}
                 >
                   <div className="flex items-center gap-2">
@@ -74,7 +84,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
                   {isActive && <ChevronRight size={14} className="text-slate-400" />}
                 </Link>
               ) : (
-                <div className="px-3 py-2 text-sm font-bold text-slate-400 uppercase tracking-wider">
+                <div className="px-3 py-2 text-sm font-bold text-slate-400 uppercase tracking-wider dark:text-slate-500">
                   {item.title}
                 </div>
               )}
@@ -88,18 +98,18 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 
   return (
     <aside className={`
-      fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block
+      fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block dark:bg-slate-950 dark:border-slate-800
       ${isOpen ? 'translate-x-0' : '-translate-x-full'}
     `}>
       <div className="h-full overflow-y-auto px-4 py-8">
         <div className="md:hidden flex justify-end mb-4">
-          <button onClick={onClose}><X size={24} /></button>
+          <button onClick={onClose} className="dark:text-white"><X size={24} /></button>
         </div>
         
         <nav className="space-y-8">
           {NAVIGATION.map((section) => (
             <div key={section.title}>
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500 px-3">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500 px-3 dark:text-slate-400">
                 {section.title}
               </h3>
               {renderNavItems(section.items)}
@@ -116,6 +126,25 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  const toggleDark = () => setIsDark(!isDark);
   const [page, setPage] = useState(1);
   const [results, setResults] = useState<{ slug: string; title: string; score: number; snippet: string }[]>([]);
   const [total, setTotal] = useState(0);
@@ -133,18 +162,18 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [query, page]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {!isAdminPage && <Header onOpenSearch={() => setSearchOpen(true)} />}
+    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950 transition-colors duration-300">
+      {!isAdminPage && <Header onOpenSearch={() => setSearchOpen(true)} isDark={isDark} toggleDark={toggleDark} />}
       
       <div className="flex-1 flex flex-col md:flex-row max-w-8xl mx-auto w-full">
         {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />}
         
-        <main className={`flex-1 min-w-0 bg-white ${isAdminPage ? 'w-full px-4' : ''}`}>
+        <main className={`flex-1 min-w-0 bg-white dark:bg-slate-950 ${isAdminPage ? 'w-full px-4' : ''}`}>
           {!isAdminPage && (
-            <div className="md:hidden p-4 border-b border-slate-100">
+            <div className="md:hidden p-4 border-b border-slate-100 dark:border-slate-800">
               <button 
                 onClick={() => setSidebarOpen(true)}
-                className="flex items-center gap-2 text-sm font-medium text-slate-600"
+                className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400"
               >
                 <Menu size={20} />
                 目录
@@ -155,12 +184,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </main>
       </div>
 
-      
-      
       {isSearchOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-20 px-4 bg-slate-900/40 backdrop-blur-sm">
-          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            <div className="p-4 border-b border-slate-100 flex items-center gap-3">
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-20 px-4 bg-slate-900/40 backdrop-blur-sm dark:bg-black/60">
+          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 dark:bg-slate-900 dark:border dark:border-slate-800">
+            <div className="p-4 border-b border-slate-100 flex items-center gap-3 dark:border-slate-800">
               <Search className="text-slate-400" size={20} />
               <input 
                 autoFocus
@@ -168,9 +195,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 value={query}
                 onChange={e => { setQuery(e.target.value); setPage(1); }}
                 placeholder="输入关键字搜索文档（支持模糊匹配与高亮）" 
-                className="flex-1 outline-none text-lg text-slate-900 placeholder:text-slate-300"
+                className="flex-1 outline-none text-lg text-slate-900 placeholder:text-slate-300 bg-transparent dark:text-white dark:placeholder:text-slate-600"
               />
-              <button onClick={() => setSearchOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setSearchOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                 <X size={20} />
               </button>
             </div>
@@ -184,11 +211,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 <>
                   <ul className="space-y-3 max-h-[400px] overflow-y-auto">
                     {results.map(r => (
-                      <li key={r.slug} className="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
-                        <Link to={`/wiki/${r.slug}`} className="font-bold text-slate-900">
+                      <li key={r.slug} className="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors dark:border-slate-800 dark:hover:bg-slate-800">
+                        <Link to={`/wiki/${r.slug}`} className="font-bold text-slate-900 dark:text-white">
                           {r.title}
                         </Link>
-                        <div className="mt-1 text-sm text-slate-600" dangerouslySetInnerHTML={{ __html: r.snippet }} />
+                        <div className="mt-1 text-sm text-slate-600 dark:text-slate-400" dangerouslySetInnerHTML={{ __html: r.snippet }} />
                       </li>
                     ))}
                     {results.length === 0 && (
@@ -201,14 +228,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                       <button 
                         disabled={page <= 1}
                         onClick={() => setPage(p => Math.max(1, p - 1))}
-                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50"
+                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50 dark:border-slate-800 dark:text-slate-400"
                       >
                         上一页
                       </button>
                       <button 
                         disabled={page * pageSize >= total}
                         onClick={() => setPage(p => p + 1)}
-                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50"
+                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50 dark:border-slate-800 dark:text-slate-400"
                       >
                         下一页
                       </button>

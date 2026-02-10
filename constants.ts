@@ -14,9 +14,14 @@ export const NAVIGATION: NavItem[] = [
   {
     title: "新手入门",
     items: [
-      { title: "服务器简介", path: "/wiki/intro" },
-      { title: "加入教程", path: "/wiki/join" },
-      { title: "服务器规范", path: "/wiki/rules" },
+      { 
+        title: "服务器简介", 
+        path: "/wiki/intro",
+        items: [
+          { title: "加入教程", path: "/wiki/join" },
+          { title: "服务器规范", path: "/wiki/rules" },
+        ]
+      },
       { title: "公告与服务器指南", path: "/wiki/announcement" },
       { title: "服务器矩阵", path: "/wiki/server-matrix" },
     ]
@@ -51,6 +56,7 @@ export const NAVIGATION: NavItem[] = [
     title: "开发者与贡献者",
     items: [
       { title: "贡献指南", path: "/wiki/contributing" },
+      { title: "基础模板", path: "/wiki/template" },
     ]
   }
 ];
@@ -70,6 +76,7 @@ export const MOCK_PAGES: WikiPage[] = [
     slug: "template",
     title: "Wiki 页面基础模板",
     category: "开发者与贡献者",
+    parent: "contributing",
     lastUpdated: "2026-02-10",
     content: "",
     icon: "📄"
@@ -105,6 +112,7 @@ export const MOCK_PAGES: WikiPage[] = [
     category: "新手入门",
     lastUpdated: "2026-02-10",
     content: "",
+    parent: "intro",
   },
   {
     id: "rules",
@@ -113,6 +121,7 @@ export const MOCK_PAGES: WikiPage[] = [
     category: "新手入门",
     lastUpdated: "2026-02-10",
     content: "",
+    parent: "intro",
   },
   {
     id: "commands",
