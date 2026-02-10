@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Navigate, Link, useLocation } from 'react-router-dom';
-import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List, History } from 'lucide-react';
+import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List, History, Upload } from 'lucide-react';
 import { MOCK_PAGES } from '../constants';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
 import { WikiPage as WikiPageType } from '../types';
@@ -271,6 +271,16 @@ const WikiPage: React.FC = () => {
                   下载此模板
                 </button>
               )}
+              
+              <a 
+                href="https://codeberg.org/addxiaoyi/starmc-wiki-page/src/branch/main/public/content/wiki" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-all dark:bg-emerald-950 dark:text-emerald-400 dark:hover:bg-emerald-900"
+              >
+                <Upload size={16} />
+                上传新文档
+              </a>
             </div>
             
             <div className="flex items-center gap-2">
