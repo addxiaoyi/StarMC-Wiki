@@ -114,17 +114,6 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void; onOpenSea
     `}>
       <div className="h-full overflow-y-auto px-4 py-8">
         <div className="flex flex-col gap-4 mb-8">
-          <button 
-            onClick={() => {
-              onOpenSearch();
-              onClose();
-            }}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-500 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
-          >
-            <Search size={18} />
-            <span>搜索文档...</span>
-          </button>
-          
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest dark:text-slate-500">菜单导航</span>
             <button onClick={onClose} className="md:hidden dark:text-white p-2 -mr-2 text-slate-500 hover:bg-slate-100 rounded-xl dark:hover:bg-slate-800">

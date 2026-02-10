@@ -66,7 +66,7 @@ const Home: React.FC = () => {
         </header>
 
         {/* Featured Section - Grid System */}
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-800 rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-slate-200 dark:border-slate-800 mb-20 md:mb-32 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-slate-200 dark:bg-slate-800 rounded-[2rem] md:rounded-[3rem] overflow-hidden border border-slate-200 dark:border-slate-800 mb-20 md:mb-32 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
           {[
             { 
               title: "纯净生存", 
