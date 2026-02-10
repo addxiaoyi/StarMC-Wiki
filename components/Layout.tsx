@@ -8,33 +8,33 @@ import { search as doSearch } from '../services/searchEngine';
 
 export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggleDark: () => void }> = ({ onOpenSearch, isDark, toggleDark }) => (
   <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:bg-slate-950/80 dark:border-slate-800">
-    <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center gap-4 flex-shrink-0">
-        <Link to="/" className="flex items-center gap-2 group">
+    <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-3 sm:px-6 lg:px-8">
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <Link to="/" className="flex items-center gap-1.5 group">
           <div className="bg-slate-900 text-white p-1.5 rounded-lg transition-transform group-hover:scale-105 dark:bg-white dark:text-slate-900">
-            <Terminal size={20} />
+            <Terminal size={18} />
           </div>
-          <span className="text-base sm:text-lg font-bold tracking-tight dark:text-white">
+          <span className="text-sm sm:text-lg font-bold tracking-tight dark:text-white">
             舵星归途
           </span>
         </Link>
       </div>
 
-      <div className="flex items-center justify-end gap-1.5 sm:gap-2">
+      <div className="flex items-center justify-end gap-1 sm:gap-2 overflow-hidden">
         <button
           onClick={onOpenSearch}
-          className="md:hidden flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-100 rounded-full hover:bg-blue-100 transition-all dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50 dark:hover:bg-blue-900/50"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 text-blue-600 bg-blue-50 border border-blue-100 rounded-full hover:bg-blue-100 transition-all dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50 dark:hover:bg-blue-900/50 md:hidden"
           aria-label="Search"
         >
-          <Search size={18} />
+          <Search size={16} />
           <span className="text-xs font-bold">搜索</span>
         </button>
         <button
           onClick={toggleDark}
-          className="p-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
+          className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
           aria-label="Toggle Theme"
         >
-          {isDark ? <Sun size={22} /> : <Moon size={22} />}
+          {isDark ? <Sun size={20} /> : <Moon size={20} />}
         </button>
         
         <button 
@@ -240,15 +240,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </div>
 
       {!isAdminPage && (
-        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-3rem)] max-w-sm">
+        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-sm">
           <button
             onClick={() => setSearchOpen(true)}
-            className="w-full flex items-center gap-3 px-5 py-3.5 bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl shadow-2xl shadow-blue-500/10 dark:bg-slate-900/90 dark:border-slate-800 dark:shadow-none text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-[0.98]"
+            className="w-full flex items-center gap-3 px-5 py-4 bg-white border-2 border-blue-500 rounded-2xl shadow-[0_20px_50px_rgba(59,130,246,0.3)] dark:bg-slate-900 dark:border-blue-600 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-all active:scale-[0.98]"
             aria-label="Floating Search Bar"
           >
-            <Search size={20} className="text-blue-500" />
-            <span className="text-sm font-semibold tracking-wide">搜索文档内容...</span>
-            <div className="ml-auto bg-slate-100 px-2 py-0.5 rounded text-[10px] font-bold text-slate-400 dark:bg-slate-800">
+            <Search size={22} className="text-blue-500 animate-pulse" />
+            <span className="text-base font-bold tracking-wide">点击此处搜索文档...</span>
+            <div className="ml-auto bg-blue-500 text-white px-2.5 py-1 rounded-lg text-xs font-black">
               GO
             </div>
           </button>
