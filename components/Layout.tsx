@@ -170,7 +170,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     }
   }, [isDark]);
 
-  const toggleDark = () => setIsDark(!isDark);
+  const toggleDark = () => {
+    console.log('Toggle dark mode from:', isDark);
+    setIsDark(prev => !prev);
+  };
   const [page, setPage] = useState(1);
   const [results, setResults] = useState<{ slug: string; title: string; score: number; snippet: string }[]>([]);
   const [total, setTotal] = useState(0);
