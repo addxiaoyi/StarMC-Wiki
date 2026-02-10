@@ -6,7 +6,7 @@ import { NAVIGATION, SERVER_NAME, OFFICIAL_WEBSITE } from '../constants';
  
 import { search as doSearch } from '../services/searchEngine';
 
-export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggleDark: () => void }> = ({ onOpenSearch, isDark, toggleDark }) => (
+export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggleDark: (e: React.MouseEvent) => void }> = ({ onOpenSearch, isDark, toggleDark }) => (
     <header className="sticky top-0 z-[100] w-full border-b border-slate-200 bg-white dark:bg-slate-950 dark:border-slate-800">
       <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-3">
         <div className="flex items-center gap-2">
@@ -23,7 +23,7 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
         <div className="flex items-center gap-2 flex-shrink-0">
           {/* 移动端搜索按钮 - 强制显示 */}
           <button
-            onClick={onOpenSearch}
+            onClick={(e) => { e.preventDefault(); onOpenSearch(); }}
             className="flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-200 rounded-full dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700 md:hidden"
             style={{ display: 'flex !important' }}
           >
@@ -33,10 +33,11 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
           {/* 主题切换按钮 - 强制显示 */}
           <button
             onClick={toggleDark}
-            className="p-2 text-slate-600 bg-slate-100 rounded-lg dark:text-slate-300 dark:bg-slate-800"
-            style={{ display: 'block !important' }}
+            className="p-2 text-slate-600 bg-slate-100 rounded-lg dark:text-slate-300 dark:bg-slate-800 cursor-pointer active:scale-90 transition-transform"
+            style={{ display: 'block !important', pointerEvents: 'auto' }}
+            title="切换主题"
           >
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            {isDark ? <Sun size={20} className="text-yellow-500" /> : <Moon size={20} className="text-blue-600" />}
           </button>
         </div>
         
@@ -154,25 +155,29 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [query, setQuery] = useState('');
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') === 'dark' || 
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      const saved = localStorage.getItem('theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return false;
   });
 
   useEffect(() => {
+    const root = document.documentElement;
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
 
-  const toggleDark = () => {
-    console.log('Toggle dark mode from:', isDark);
-    setIsDark(prev => !prev);
+  const toggleDark = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Toggle Clicked, Current:', isDark);
+    setIsDark(!isDark);
   };
   const [page, setPage] = useState(1);
   const [results, setResults] = useState<{ slug: string; title: string; score: number; snippet: string }[]>([]);
