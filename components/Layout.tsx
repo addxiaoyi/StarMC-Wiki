@@ -21,16 +21,20 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
         </div>
 
         <div className="flex items-center gap-2">
+          {/* 移动端搜索按钮 - 强制显示 */}
           <button
             onClick={onOpenSearch}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-100 rounded-full dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800 md:hidden"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-200 rounded-full dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700 md:hidden"
+            style={{ display: 'flex' }}
           >
             <Search size={16} />
-            <span className="text-xs font-bold">搜索</span>
+            <span className="text-xs font-black">搜索</span>
           </button>
+          {/* 主题切换按钮 - 强制显示 */}
           <button
             onClick={toggleDark}
-            className="p-2 text-slate-500 bg-slate-50 rounded-lg dark:text-slate-400 dark:bg-slate-900"
+            className="p-2 text-slate-600 bg-slate-100 rounded-lg dark:text-slate-300 dark:bg-slate-800"
+            style={{ display: 'block' }}
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
@@ -239,14 +243,18 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </div>
 
       {!isAdminPage && (
-        <div className="md:hidden fixed bottom-10 left-0 right-0 z-[200] px-4 pointer-events-none">
+        <div 
+          className="md:hidden fixed bottom-10 left-0 right-0 z-[999] px-4 pointer-events-none"
+          style={{ position: 'fixed', bottom: '40px', zIndex: 999 }}
+        >
           <button
             onClick={() => setSearchOpen(true)}
-            className="w-full max-w-md mx-auto flex items-center gap-3 px-6 py-4 bg-blue-600 text-white rounded-2xl shadow-[0_20px_40px_rgba(37,99,235,0.4)] active:scale-95 transition-all pointer-events-auto"
+            className="w-full max-w-md mx-auto flex items-center gap-3 px-6 py-5 bg-blue-600 text-white rounded-2xl shadow-[0_20px_40px_rgba(37,99,235,0.6)] active:scale-95 transition-all pointer-events-auto"
+            style={{ pointerEvents: 'auto', display: 'flex', backgroundColor: '#2563eb' }}
           >
-            <Search size={22} className="animate-pulse" />
-            <span className="text-base font-black">点击此处搜索文档...</span>
-            <div className="ml-auto bg-white/20 px-2 py-1 rounded text-[10px] font-black">
+            <Search size={24} className="animate-pulse" />
+            <span className="text-lg font-black tracking-wider">点击此处搜索文档</span>
+            <div className="ml-auto bg-white/20 px-2 py-1 rounded text-[10px] font-black border border-white/30">
               SEARCH
             </div>
           </button>
