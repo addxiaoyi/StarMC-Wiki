@@ -1,9 +1,21 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, BookOpen, ChevronRight, Copy, ExternalLink, Terminal, Globe, Zap, Check, Search } from 'lucide-react';
+import { 
+  Compass, 
+  ChevronRight, 
+  Copy, 
+  ExternalLink, 
+  Terminal, 
+  Globe, 
+  Zap, 
+  Check, 
+  Search,
+  Layout as LayoutIcon,
+  ShieldCheck,
+  Cpu,
+  ArrowUpRight
+} from 'lucide-react';
 import { SERVER_NAME, SERVER_IPS, OFFICIAL_WEBSITE } from '../constants';
-import { FileContribution } from '../components/FileContribution';
 
 const Home: React.FC = () => {
   const [copied, setCopied] = useState<string | null>(null);
@@ -15,203 +27,173 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12 lg:py-24">
-      {/* 针对移动端的紧急搜索入口 */}
-      <div className="md:hidden mb-8">
-        <button 
-          onClick={() => {
-            // 通过触发自定义事件或直接查找 DOM 来打开搜索，
-            // 但最稳妥的方法是让用户知道点击底部的蓝色悬浮条。
-            // 这里我们增加一个引导性的提示。
-          }}
-          className="w-full p-4 bg-blue-50 border-2 border-dashed border-blue-200 rounded-2xl text-blue-600 font-bold flex items-center justify-center gap-2 dark:bg-blue-900/20 dark:border-blue-800"
-        >
-          <Search size={20} />
-          使用下方蓝色悬浮窗进行搜索
-        </button>
-      </div>
-
-      {/* Hero Section */}
-      <section className="text-center mb-24">
-        <div className="inline-flex items-center justify-center mb-10">
-          <div className="flex items-center gap-3 px-4 py-2 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none animate-in fade-in zoom-in duration-700">
-            <div className="relative">
-              <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
-              <div className="absolute inset-0 w-1.5 h-1.5 bg-blue-400 rounded-full animate-ping" />
+    <div className="min-h-screen bg-white dark:bg-slate-950 selection:bg-blue-100 dark:selection:bg-blue-900/30 transition-colors duration-500">
+      {/* 谷歌杂志风格 Header 引导 */}
+      <div className="max-w-7xl mx-auto px-6 pt-12 lg:pt-20">
+        <div className="md:hidden mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
+          <button 
+            className="w-full p-6 bg-slate-50 border border-slate-200 rounded-3xl text-slate-900 font-bold flex flex-col items-center justify-center gap-3 dark:bg-slate-900 dark:border-slate-800 dark:text-white group active:scale-[0.98] transition-all"
+            onClick={() => {
+              const floatingSearch = document.querySelector('[style*="zIndex: 999"] button') as HTMLButtonElement;
+              floatingSearch?.click();
+            }}
+          >
+            <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200 dark:shadow-none">
+              <Search size={24} />
             </div>
-            <span className="text-[10px] font-black text-white uppercase tracking-widest">Documentation Hub</span>
-          </div>
+            <div className="text-center">
+              <p className="text-lg">准备好探索了吗？</p>
+              <p className="text-sm text-slate-500 font-medium">点击底部蓝色按钮开始搜索</p>
+            </div>
+          </button>
         </div>
-        
-        <h1 className="text-6xl lg:text-8xl font-black tracking-tighter text-slate-900 mb-8 dark:text-white">
-          {SERVER_NAME}
-        </h1>
-        <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium dark:text-slate-400">
-          专注于稳定、纯净生存与技术交流的 Minecraft 社区。
-          在此查阅文档了解连接方式与社区准则。
-        </p>
-        
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-5">
-          <Link to="/wiki/intro" className="px-10 py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:translate-y-[-2px] active:translate-y-0 transition-all flex items-center gap-2 group dark:bg-white dark:text-slate-900">
-            开始探索
-            <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <a href={OFFICIAL_WEBSITE} target="_blank" rel="noreferrer" className="px-10 py-4 bg-white border border-slate-200 text-slate-600 font-bold rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2 dark:bg-slate-950 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white">
-            官方网站
-            <ExternalLink size={18} />
-          </a>
-          <a href="https://status.s3.fan/s/starmc" target="_blank" rel="noreferrer" className="px-10 py-4 bg-white border border-slate-200 text-slate-600 font-bold rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2 dark:bg-slate-950 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white">
-            服务器状态
-            <ExternalLink size={18} />
-          </a>
-        </div>
-      </section>
 
-      {/* Connection Info */}
-      <section className="mb-32">
-        <div className="flex items-center justify-center gap-3 mb-12">
-          <div className="h-px w-12 bg-slate-100 dark:bg-slate-800" />
-          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] whitespace-nowrap dark:text-slate-600">
-            服务器接入点 / ACCESS POINTS
-          </h2>
-          <div className="h-px w-12 bg-slate-100 dark:bg-slate-800" />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        {/* Hero Section - Magazine Layout */}
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-24 lg:mb-40">
+          <div className="lg:col-span-8 space-y-8">
+            <div className="inline-flex items-center gap-3 px-3 py-1 bg-blue-50 border border-blue-100 rounded-full dark:bg-blue-950/30 dark:border-blue-900/50 animate-in fade-in duration-1000">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-700 dark:text-blue-400">Documentation Hub v2.0</span>
+            </div>
+            
+            <h1 className="text-7xl md:text-8xl lg:text-[10rem] font-black tracking-tight leading-[0.85] text-slate-900 dark:text-white animate-in fade-in slide-in-from-left-8 duration-1000 delay-150">
+              {SERVER_NAME.split(' ')[0]}<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+                {SERVER_NAME.split(' ')[1] || 'WIKI'}
+              </span>
+            </h1>
+          </div>
+          
+          <div className="lg:col-span-4 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+            <p className="text-2xl text-slate-500 font-medium leading-tight dark:text-slate-400 border-l-4 border-blue-600 pl-6 dark:border-blue-400">
+              专注于稳定、纯净生存与技术交流的 Minecraft 社区。在这里，每一行文档都为你指引归途。
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to="/wiki/intro" className="flex-1 px-8 py-5 bg-slate-900 text-white font-bold rounded-2xl flex items-center justify-between group hover:bg-blue-600 transition-all dark:bg-white dark:text-slate-900 dark:hover:bg-blue-50">
+                开始探索
+                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <a href={OFFICIAL_WEBSITE} target="_blank" rel="noreferrer" className="px-8 py-5 bg-white border border-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-50 dark:bg-slate-950 dark:border-slate-800 dark:text-white dark:hover:bg-slate-900">
+                官网
+                <ArrowUpRight size={20} />
+              </a>
+            </div>
+          </div>
+        </header>
+
+        {/* Featured Section - Grid System */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-1px bg-slate-200 dark:bg-slate-800 rounded-[3rem] overflow-hidden border border-slate-200 dark:border-slate-800 mb-32 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
           {[
-            { label: "主连接线路", ip: SERVER_IPS.primary, icon: <Zap className="text-amber-500" /> },
-            { label: "备用连接线路", ip: SERVER_IPS.secondary, icon: <Globe className="text-blue-500" /> }
+            { 
+              title: "纯净生存", 
+              desc: "回归最本真的游戏体验，无繁琐插件，唯有协作与创造。",
+              icon: <Zap className="text-blue-600" />,
+              bg: "bg-white dark:bg-slate-950"
+            },
+            { 
+              title: "技术社区", 
+              desc: "汇聚红石大牛与生电爱好者，共同挑战原版生存极限。",
+              icon: <Cpu className="text-indigo-600" />,
+              bg: "bg-white dark:bg-slate-950"
+            },
+            { 
+              title: "安全稳定", 
+              desc: "多重数据备份与专业的管理团队，守护每一份建筑成果。",
+              icon: <ShieldCheck className="text-emerald-600" />,
+              bg: "bg-white dark:bg-slate-950"
+            }
           ].map((item, i) => (
-            <div key={i} className="relative group p-8 bg-white border border-slate-100 rounded-[2rem] hover:border-slate-300 hover:shadow-2xl hover:shadow-slate-200/50 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 dark:hover:shadow-none transition-all duration-500 flex flex-col items-center">
-              <div className="mb-6 p-4 bg-slate-50 rounded-2xl group-hover:scale-110 group-hover:bg-white dark:bg-slate-950 dark:group-hover:bg-slate-800 transition-all duration-500">{item.icon}</div>
-              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 dark:text-slate-500">{item.label}</div>
-              
-              <div className="w-full relative">
-                <div className="flex items-center gap-2 bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100 w-full group-hover:bg-white dark:bg-slate-950 dark:border-slate-800 dark:group-hover:bg-slate-900 transition-colors">
-                  <code className="flex-1 text-slate-700 font-mono text-sm overflow-hidden text-ellipsis whitespace-nowrap text-center dark:text-slate-300">
-                    {item.ip}
-                  </code>
-                </div>
-                <button 
-                  onClick={() => copyToClipboard(item.ip)}
-                  className={`mt-4 w-full py-2 flex items-center justify-center gap-2 text-xs font-bold rounded-xl transition-all ${
-                    copied === item.ip ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-900 hover:text-white dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-white dark:hover:text-slate-900'
-                  }`}
-                >
-                  {copied === item.ip ? <Check size={14} /> : <Copy size={14} />}
-                  {copied === item.ip ? '已复制' : '复制地址'}
-                </button>
+            <div key={i} className={`p-12 ${item.bg} hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors group`}>
+              <div className="mb-8 p-4 bg-slate-50 dark:bg-slate-900 w-fit rounded-2xl group-hover:scale-110 group-hover:bg-white dark:group-hover:bg-slate-800 transition-all duration-500">
+                {item.icon}
               </div>
+              <h3 className="text-3xl font-black mb-4 dark:text-white">{item.title}</h3>
+              <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">{item.desc}</p>
             </div>
           ))}
-        </div>
-      </section>
+        </section>
 
-      {/* Quick Navigation Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-        <div className="space-y-10">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center dark:bg-white dark:text-slate-900">
-              <Compass size={20} />
+        {/* Access Points - Editorial Style */}
+        <section className="mb-40">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+            <div className="max-w-xl">
+              <h2 className="text-5xl font-black mb-6 dark:text-white tracking-tight">服务器接入点</h2>
+              <p className="text-xl text-slate-500 font-medium dark:text-slate-400">
+                选择最适合你的连接线路。建议根据你的网络环境优先尝试主线路。
+              </p>
             </div>
-            <h2 className="text-2xl font-black text-slate-900 dark:text-white">维基导览</h2>
+            <div className="hidden lg:block h-px flex-1 bg-slate-200 mx-12 mb-6 dark:bg-slate-800" />
+            <div className="text-right">
+              <span className="text-sm font-black text-slate-400 uppercase tracking-widest">ACCESS POINTS</span>
+            </div>
           </div>
-          <div className="grid gap-4">
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {[
-              { title: "新手入门", desc: "了解如何加入白名单以及基本指引", path: "/wiki/intro" },
-              { title: "加入教程", desc: "详细的客户端设置与连接说明", path: "/wiki/join" },
-              { title: "服务器规范", desc: "查看游玩规则，维护社区秩序", path: "/wiki/rules" },
-            ].map((card, i) => (
-              <Link key={i} to={card.path} className="group p-6 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:border-slate-700">
-                <div>
-                  <h3 className="font-bold text-slate-900 group-hover:text-slate-600 transition-colors dark:text-white dark:group-hover:text-slate-300">{card.title}</h3>
-                  <p className="text-sm text-slate-500 mt-1 dark:text-slate-400">{card.desc}</p>
+              { label: "主连接线路", ip: SERVER_IPS.primary, icon: <Zap size={24} className="text-amber-500" />, badge: "推荐" },
+              { label: "备用连接线路", ip: SERVER_IPS.secondary, icon: <Globe size={24} className="text-blue-500" />, badge: "稳定" }
+            ].map((item, i) => (
+              <div key={i} className="group p-10 bg-slate-50 rounded-[2.5rem] border border-transparent hover:border-blue-200 hover:bg-white dark:bg-slate-900 dark:hover:bg-slate-950 dark:hover:border-blue-900/50 transition-all duration-500">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">{item.icon}</div>
+                  <span className="px-4 py-1 bg-blue-100 text-blue-700 text-xs font-black rounded-full dark:bg-blue-900/40 dark:text-blue-300">
+                    {item.badge}
+                  </span>
                 </div>
-                <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-white group-hover:translate-x-1 transition-all dark:bg-slate-950 dark:group-hover:bg-slate-900">
-                  <ChevronRight size={18} className="text-slate-300 group-hover:text-slate-900 dark:text-slate-700 dark:group-hover:text-white" />
+                <div className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4 dark:text-slate-500">{item.label}</div>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                  <div className="flex-1 bg-white dark:bg-slate-950 px-6 py-4 rounded-2xl border border-slate-200 dark:border-slate-800 group-hover:border-blue-300 dark:group-hover:border-blue-700 transition-colors">
+                    <code className="text-xl text-slate-900 font-mono font-bold dark:text-white">{item.ip}</code>
+                  </div>
+                  <button 
+                    onClick={() => copyToClipboard(item.ip)}
+                    className={`px-8 py-4 flex items-center justify-center gap-2 font-black rounded-2xl transition-all ${
+                      copied === item.ip 
+                        ? 'bg-emerald-500 text-white scale-95' 
+                        : 'bg-slate-900 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500'
+                    }`}
+                  >
+                    {copied === item.ip ? <Check size={20} /> : <Copy size={20} />}
+                    {copied === item.ip ? '已复制' : '复制地址'}
+                  </button>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div className="space-y-10">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-slate-100 text-slate-900 rounded-xl flex items-center justify-center dark:bg-slate-900 dark:text-white">
-              <BookOpen size={20} />
+        {/* Footer Editorial */}
+        <footer className="border-t border-slate-200 dark:border-slate-800 pt-20 pb-32 grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-6 space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-slate-900 text-white p-2 rounded-xl dark:bg-white dark:text-slate-900">
+                <Terminal size={24} />
+              </div>
+              <span className="text-2xl font-black tracking-tighter dark:text-white uppercase">StarMC Wiki</span>
             </div>
-            <h2 className="text-2xl font-black text-slate-900 dark:text-white">最近动态</h2>
+            <p className="text-slate-500 dark:text-slate-400 font-medium max-w-sm">
+              致力于打造最详尽的生电生存指南。代码开源，内容共享。
+            </p>
           </div>
-          <RecentCommits />
-          
-          <div className="pt-10">
-            <FileContribution />
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-sm font-black text-slate-400 uppercase tracking-widest">快速链接</h4>
+            <ul className="space-y-2">
+              <li><Link to="/wiki/intro" className="text-lg font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">入门指南</Link></li>
+              <li><Link to="/wiki/rules" className="text-lg font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">社区准则</Link></li>
+              <li><a href={OFFICIAL_WEBSITE} className="text-lg font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">官方网站</a></li>
+            </ul>
           </div>
-        </div>
+          <div className="lg:col-span-3 space-y-4 text-right">
+             <div className="text-sm font-black text-slate-400 uppercase tracking-widest">© 2026 STARMC</div>
+             <p className="text-slate-500 dark:text-slate-400 font-medium text-xs">
+               Crafted with passion for the Minecraft community.
+             </p>
+          </div>
+        </footer>
       </div>
-
-      <footer className="mt-40 pt-16 border-t border-slate-100 dark:border-slate-800">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2 font-black text-slate-900 dark:text-white">
-            <Terminal size={18} />
-            {SERVER_NAME}
-          </div>
-          <p className="text-slate-400 text-sm font-medium dark:text-slate-500">
-            官网: <a href={OFFICIAL_WEBSITE} className="text-slate-500 hover:text-slate-900 underline underline-offset-4 decoration-slate-200 hover:decoration-slate-900 transition-all dark:text-slate-400 dark:hover:text-white dark:decoration-slate-800">{OFFICIAL_WEBSITE}</a>
-          </p>
-          <p className="text-slate-300 text-[10px] uppercase font-bold tracking-widest flex items-center gap-4 dark:text-slate-600">
-            <span>StarMC Wiki Project</span>
-            <Link to="/admin/review" className="hover:text-slate-900 transition-colors dark:hover:text-white">管理入口</Link>
-          </p>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-const RecentCommits: React.FC = () => {
-  const [items, setItems] = useState<{ date: string; title: string; url: string }[]>([]);
-  useEffect(() => {
-    const fetchCommits = async () => {
-      try {
-        // 使用 cache: 'no-store' 确保获取最新数据，避免 API 缓存
-        const res = await fetch('https://api.github.com/repos/addxiaoyi/StarMC-Wiki/commits?per_page=5', {
-          cache: 'no-store',
-          headers: {
-            'Accept': 'application/vnd.github.v3+json'
-          }
-        });
-        const data = await res.json();
-        if (Array.isArray(data)) {
-          const list = data.map((c: any) => ({
-            date: new Date(c.commit.author.date).toISOString().slice(0, 10).replace(/-/g, '.'),
-            title: c.commit.message.split('\n')[0],
-            url: c.html_url
-          }));
-          setItems(list);
-        } else {
-          setItems([]);
-        }
-      } catch (err) {
-        console.error('Fetch commits failed:', err);
-        setItems([]);
-      }
-    };
-    fetchCommits();
-    const interval = setInterval(fetchCommits, 60000); // 调整为每分钟检查一次，避免触发 GitHub API 速率限制
-    return () => clearInterval(interval);
-  }, []);
-  return (
-    <div className="space-y-6">
-      {items.length === 0 ? (
-        <div className="p-6 text-center text-slate-400">暂无最新提交，稍后再试</div>
-      ) : items.map((update, i) => (
-        <a key={i} href={update.url} target="_blank" rel="noreferrer" className="flex gap-6 p-4 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-2xl transition-all group">
-          <div className="text-xs font-black text-slate-300 font-mono pt-1 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">{update.date}</div>
-          <div className="text-sm font-bold text-slate-600 dark:text-slate-400 leading-snug">{update.title}</div>
-          <ExternalLink size={16} className="ml-auto text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white" />
-        </a>
-      ))}
     </div>
   );
 };
