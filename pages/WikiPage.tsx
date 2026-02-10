@@ -138,7 +138,7 @@ const WikiPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-slate-400 gap-4">
-        <Loader2 size={40} className="animate-spin text-slate-200 dark:text-slate-800" />
+        <Loader2 size={40} className="animate-spin text-slate-200 dark:text-slate-700" />
         <p className="text-sm font-medium">正在从云端同步文档...</p>
       </div>
     );

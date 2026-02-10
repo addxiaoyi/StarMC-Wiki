@@ -28,4 +28,8 @@
   body {
     @apply bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300;
   }
+
+  mark {
+    @apply bg-blue-100 text-blue-700 rounded-sm px-0.5 dark:bg-blue-900/50 dark:text-blue-300;
+  }
 }

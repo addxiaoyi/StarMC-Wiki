@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Info, AlertTriangle, AlertCircle, CheckCircle, ZoomIn, X } from 'lucide-react';
 
 interface MarkdownRendererProps {
@@ -7,9 +7,23 @@ interface MarkdownRendererProps {
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
   const [zoomImage, setZoomImage] = useState<string | null>(null);
+
+  // Body scroll lock when zoom image is active
+  useEffect(() => {
+    if (zoomImage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [zoomImage]);
+
   const lines = content.split('\n');
   let inList = false;
   let inTable = false;
+  let tableRows: string[][] = [];
   let inCodeBlock = false;
   let codeContent: string[] = [];
   let codeLang = '';
@@ -190,22 +204,46 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) =
     // Handle Tables
     if (line.startsWith('|')) {
       if (line.includes('---')) continue;
-      const cells = line.split('|').filter(c => c.trim() !== '');
-      elements.push(
-        <div key={i} className="overflow-x-auto my-6">
-          <table className="min-w-full border-collapse border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden">
-            <tbody className="bg-white dark:bg-slate-900">
-              <tr className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                {cells.map((cell, cIdx) => (
-                  <td key={cIdx} className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400 border-r border-slate-100 dark:border-slate-800 last:border-0">
-                    {cell.trim()}
-                  </td>
+      const cells = line.split('|').filter((_, idx, arr) => idx > 0 && idx < arr.length - 1).map(c => c.trim());
+      
+      if (!inTable) {
+        inTable = true;
+        tableRows = [cells];
+      } else {
+        tableRows.push(cells);
+      }
+      
+      // Check if next line is also a table line
+      const nextLine = lines[i + 1];
+      if (!nextLine || !nextLine.trim().startsWith('|')) {
+        inTable = false;
+        elements.push(
+          <div key={`table-${i}`} className="overflow-x-auto my-8">
+            <table className="min-w-full border-collapse border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+              <thead>
+                <tr className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+                  {tableRows[0].map((cell, cIdx) => (
+                    <th key={cIdx} className="px-6 py-4 text-left text-sm font-bold text-slate-900 dark:text-white border-r border-slate-200 dark:border-slate-800 last:border-0">
+                      {cell}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="bg-white dark:bg-slate-950">
+                {tableRows.slice(1).map((row, rIdx) => (
+                  <tr key={rIdx} className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors last:border-0">
+                    {row.map((cell, cIdx) => (
+                      <td key={cIdx} className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 border-r border-slate-100 dark:border-slate-800 last:border-0">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
+              </tbody>
+            </table>
+          </div>
+        );
+      }
       continue;
     }
 

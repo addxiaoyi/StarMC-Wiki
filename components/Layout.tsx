@@ -23,6 +23,13 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
 
       <div className="flex items-center gap-4">
         <button
+          onClick={onOpenSearch}
+          className="md:hidden p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
+          aria-label="Search"
+        >
+          <Search size={20} />
+        </button>
+        <button
           onClick={toggleDark}
           className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
           aria-label="Toggle Theme"
@@ -54,7 +61,7 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
   </header>
 );
 
-export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void; onOpenSearch: () => void }> = ({ isOpen, onClose, onOpenSearch }) => {
   const location = useLocation();
 
   const renderNavItems = (items: any[], level = 0) => {
@@ -102,8 +109,19 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
       ${isOpen ? 'translate-x-0' : '-translate-x-full'}
     `}>
       <div className="h-full overflow-y-auto px-4 py-8">
-        <div className="md:hidden flex justify-end mb-4">
-          <button onClick={onClose} className="dark:text-white"><X size={24} /></button>
+        <div className="flex items-center justify-between mb-8 px-3">
+          <div className="md:hidden flex items-center gap-4">
+            <button 
+              onClick={() => {
+                onOpenSearch();
+                onClose();
+              }}
+              className="p-2 -ml-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
+            >
+              <Search size={20} />
+            </button>
+          </div>
+          <button onClick={onClose} className="md:hidden dark:text-white p-2 -mr-2 text-slate-500 hover:bg-slate-100 rounded-xl dark:hover:bg-slate-800"><X size={24} /></button>
         </div>
         
         <nav className="space-y-8">
@@ -150,6 +168,32 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [total, setTotal] = useState(0);
   const pageSize = 20;
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+      if (e.key === 'Escape') {
+        setSearchOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Scroll lock for search modal
+  useEffect(() => {
+    if (isSearchOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isSearchOpen]);
+
   const isAdminPage = location.pathname.toLowerCase().includes('admin');
 
   useEffect(() => {
@@ -166,17 +210,23 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       {!isAdminPage && <Header onOpenSearch={() => setSearchOpen(true)} isDark={isDark} toggleDark={toggleDark} />}
       
       <div className="flex-1 flex flex-col md:flex-row max-w-8xl mx-auto w-full">
-        {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />}
+        {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} onOpenSearch={() => setSearchOpen(true)} />}
         
         <main className={`flex-1 min-w-0 bg-white dark:bg-slate-950 ${isAdminPage ? 'w-full px-4' : ''}`}>
           {!isAdminPage && (
-            <div className="md:hidden p-4 border-b border-slate-100 dark:border-slate-800">
+            <div className="md:hidden p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <button 
                 onClick={() => setSidebarOpen(true)}
                 className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400"
               >
                 <Menu size={20} />
                 目录
+              </button>
+              <button 
+                onClick={() => setSearchOpen(true)}
+                className="p-2 text-slate-500 dark:text-slate-400"
+              >
+                <Search size={18} />
               </button>
             </div>
           )}
@@ -185,57 +235,66 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </div>
 
       {isSearchOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-20 px-4 bg-slate-900/40 backdrop-blur-sm dark:bg-black/60">
-          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 dark:bg-slate-900 dark:border dark:border-slate-800">
-            <div className="p-4 border-b border-slate-100 flex items-center gap-3 dark:border-slate-800">
+        <div 
+          className="fixed inset-0 z-[60] flex items-start justify-center pt-4 sm:pt-20 px-4 bg-slate-900/40 backdrop-blur-sm dark:bg-black/60"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSearchOpen(false);
+          }}
+        >
+          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 dark:bg-slate-900 dark:border dark:border-slate-800 flex flex-col max-h-[90vh] sm:max-h-none" onClick={e => e.stopPropagation()}>
+            <div className="p-4 border-b border-slate-100 flex items-center gap-3 dark:border-slate-800 sticky top-0 bg-white dark:bg-slate-900 z-10">
               <Search className="text-slate-400" size={20} />
               <input 
                 autoFocus
                 type="text" 
                 value={query}
                 onChange={e => { setQuery(e.target.value); setPage(1); }}
-                placeholder="输入关键字搜索文档（支持模糊匹配与高亮）" 
-                className="flex-1 outline-none text-lg text-slate-900 placeholder:text-slate-300 bg-transparent dark:text-white dark:placeholder:text-slate-600"
+                placeholder="搜索文档..." 
+                className="flex-1 outline-none text-base sm:text-lg text-slate-900 placeholder:text-slate-300 bg-transparent dark:text-white dark:placeholder:text-slate-600"
               />
-              <button onClick={() => setSearchOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+              <button onClick={() => setSearchOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1">
                 <X size={20} />
               </button>
             </div>
-            <div className="p-4">
+            <div className="p-4 overflow-y-auto flex-1">
               {query.trim() === '' ? (
                 <div className="p-8 text-center text-slate-400">
                   <div className="mb-2"><Book size={32} className="mx-auto opacity-20" /></div>
-                  <p>请输入关键词开始搜索</p>
+                  <p className="text-sm">请输入关键词开始搜索</p>
                 </div>
               ) : (
                 <>
-                  <ul className="space-y-3 max-h-[400px] overflow-y-auto">
+                  <ul className="space-y-3">
                     {results.map(r => (
                       <li key={r.slug} className="p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors dark:border-slate-800 dark:hover:bg-slate-800">
-                        <Link to={`/wiki/${r.slug}`} className="font-bold text-slate-900 dark:text-white">
+                        <Link 
+                          to={`/wiki/${r.slug}`} 
+                          onClick={() => setSearchOpen(false)}
+                          className="font-bold text-slate-900 dark:text-white block mb-1"
+                        >
                           {r.title}
                         </Link>
-                        <div className="mt-1 text-sm text-slate-600 dark:text-slate-400" dangerouslySetInnerHTML={{ __html: r.snippet }} />
+                        <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-2" dangerouslySetInnerHTML={{ __html: r.snippet }} />
                       </li>
                     ))}
                     {results.length === 0 && (
                       <li className="p-8 text-center text-slate-400">无匹配结果</li>
                     )}
                   </ul>
-                  <div className="mt-4 flex items-center justify-between">
-                    <div className="text-xs text-slate-500">共 {total} 条</div>
+                  <div className="mt-6 pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
+                    <div className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest font-bold">共 {total} 条</div>
                     <div className="flex items-center gap-2">
                       <button 
                         disabled={page <= 1}
                         onClick={() => setPage(p => Math.max(1, p - 1))}
-                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50 dark:border-slate-800 dark:text-slate-400"
+                        className="px-3 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg border border-slate-200 disabled:opacity-30 dark:border-slate-800 dark:text-slate-400"
                       >
                         上一页
                       </button>
                       <button 
                         disabled={page * pageSize >= total}
                         onClick={() => setPage(p => p + 1)}
-                        className="px-3 py-1.5 text-xs rounded-md border border-slate-200 disabled:opacity-50 dark:border-slate-800 dark:text-slate-400"
+                        className="px-3 py-1.5 text-[10px] sm:text-xs font-bold rounded-lg border border-slate-200 disabled:opacity-30 dark:border-slate-800 dark:text-slate-400"
                       >
                         下一页
                       </button>
