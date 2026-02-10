@@ -238,7 +238,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const handleSyncNotify = (e: any) => {
       setSyncMsg(e.detail || '同步成功');
       setShowSyncNotify(true);
-      setTimeout(() => setShowSyncNotify(false), 2500);
+      // 动画总时长 2.6s，留一点余量
+      setTimeout(() => setShowSyncNotify(false), 2700);
     };
     window.addEventListener('sync-notify', handleSyncNotify);
     return () => window.removeEventListener('sync-notify', handleSyncNotify);
@@ -374,16 +375,16 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       )}
 
       <style>{`
-        @keyframes sms-float {
-          0% { opacity: 0; transform: translateY(-10px); }
-          15% { opacity: 1; transform: translateY(0); }
-          85% { opacity: 1; transform: translateY(0); }
-          100% { opacity: 0; transform: translateY(-5px); }
-        }
-        .animate-sms-float {
-          animation: sms-float 2.3s ease-in-out forwards;
-        }
-      `}</style>
+          @keyframes sms-float {
+            0% { opacity: 0; transform: translateY(-12px); }
+            12% { opacity: 1; transform: translateY(0); }
+            88% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-8px); }
+          }
+          .animate-sms-float {
+            animation: sms-float 2.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+          }
+        `}</style>
     </div>
   );
 };

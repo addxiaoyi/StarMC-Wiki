@@ -67,6 +67,12 @@ const GitHistory: React.FC = () => {
         };
       });
 
+      if (formattedCommits.length > 0 && commits.length > 0 && formattedCommits[0].sha !== commits[0].sha) {
+        window.dispatchEvent(new CustomEvent('sync-notify', { 
+          detail: `更新了：${formattedCommits[0].message}` 
+        }));
+      }
+
       setCommits(formattedCommits);
     } catch (err: any) {
       setError(err.message);
