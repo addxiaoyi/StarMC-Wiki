@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, BookOpen, ChevronRight, Copy, ExternalLink, Terminal, Globe, Zap, Check } from 'lucide-react';
+import { Compass, BookOpen, ChevronRight, Copy, ExternalLink, Terminal, Globe, Zap, Check, Search } from 'lucide-react';
 import { SERVER_NAME, SERVER_IPS, OFFICIAL_WEBSITE } from '../constants';
 import { FileContribution } from '../components/FileContribution';
 
@@ -16,6 +16,21 @@ const Home: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 lg:py-24">
+      {/* 针对移动端的紧急搜索入口 */}
+      <div className="md:hidden mb-8">
+        <button 
+          onClick={() => {
+            // 通过触发自定义事件或直接查找 DOM 来打开搜索，
+            // 但最稳妥的方法是让用户知道点击底部的蓝色悬浮条。
+            // 这里我们增加一个引导性的提示。
+          }}
+          className="w-full p-4 bg-blue-50 border-2 border-dashed border-blue-200 rounded-2xl text-blue-600 font-bold flex items-center justify-center gap-2 dark:bg-blue-900/20 dark:border-blue-800"
+        >
+          <Search size={20} />
+          使用下方蓝色悬浮窗进行搜索
+        </button>
+      </div>
+
       {/* Hero Section */}
       <section className="text-center mb-24">
         <div className="inline-flex items-center justify-center mb-10">

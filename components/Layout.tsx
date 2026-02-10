@@ -218,10 +218,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950 transition-colors duration-300">
       {!isAdminPage && <Header onOpenSearch={() => setSearchOpen(true)} isDark={isDark} toggleDark={toggleDark} />}
       
-      <div className="flex-1 flex flex-col md:flex-row max-w-8xl mx-auto w-full">
+      <div className="flex-1 flex flex-col md:flex-row max-w-8xl mx-auto w-full relative">
         {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} onOpenSearch={() => setSearchOpen(true)} />}
         
         <main className={`flex-1 min-w-0 bg-white dark:bg-slate-950 ${isAdminPage ? 'w-full px-4' : ''}`}>
+          {/* 首页不重复显示这个内嵌的导航条，因为首页有自己的 Hero 区域 */}
+          {location.pathname !== '/' && (
             <div className="md:hidden p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white/50 backdrop-blur-sm dark:bg-slate-950/50">
               <button 
                 onClick={() => setSidebarOpen(true)}
@@ -238,6 +240,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 搜索
               </button>
             </div>
+          )}
           {children}
         </main>
       </div>
