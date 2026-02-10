@@ -4,7 +4,6 @@ import {
   Compass, 
   ChevronRight, 
   Copy, 
-  ExternalLink, 
   Terminal, 
   Globe, 
   Zap, 
@@ -70,29 +69,29 @@ const Home: React.FC = () => {
 
       <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 lg:pt-20">
         {/* Hero Section - Magazine Layout */}
-        <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-end mb-16 md:mb-24 lg:mb-40">
-          <div className="lg:col-span-8 space-y-6 md:space-y-8">
-            <div className={`inline-flex items-center gap-3 px-3 py-1 rounded-full animate-in fade-in duration-1000 ${
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-end mb-12 md:mb-24 lg:mb-40">
+          <div className="lg:col-span-8 space-y-4 md:space-y-8">
+            <div className={`inline-flex items-center gap-2 md:gap-3 px-2 md:px-3 py-1 rounded-full animate-in fade-in duration-1000 ${
               theme === 'blueprint' ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border border-slate-800' :
               theme === 'aura' ? 'bg-blue-50 border border-blue-100 dark:bg-blue-950/30 dark:border-blue-900/50' :
               'bg-emerald-100 border-2 border-emerald-500/20 dark:bg-emerald-950/30 dark:border-emerald-500/50'
             }`}>
-              <span className="relative flex h-2 w-2">
+              <span className="relative flex h-1.5 w-1.5 md:h-2 md:w-2">
                 <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
                   theme === 'voxel' ? 'bg-emerald-400' : 'bg-blue-400'
                 }`}></span>
-                <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 md:h-2 md:w-2 ${
                   theme === 'voxel' ? 'bg-emerald-500' : 'bg-blue-500'
                 }`}></span>
               </span>
-              <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${
+              <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] ${
                 theme === 'blueprint' ? 'text-inherit' :
                 theme === 'aura' ? 'text-blue-700 dark:text-blue-400' :
                 'text-emerald-700 dark:text-emerald-400'
               }`}>Documentation Hub v2.0</span>
             </div>
             
-            <h1 className="text-[clamp(4rem,15vw,10rem)] font-black tracking-tighter leading-[0.8] text-slate-900 dark:text-white animate-in fade-in slide-in-from-left-8 duration-1000 delay-150">
+            <h1 className="text-[clamp(2rem,12vw,8rem)] font-black tracking-tighter leading-[0.85] text-slate-900 dark:text-white animate-in fade-in slide-in-from-left-8 duration-1000 delay-150">
               {SERVER_NAME.split(' ')[0]}<br/>
               <span className={`text-transparent bg-clip-text bg-gradient-to-r ${
                 theme === 'blueprint' ? 'from-slate-700 to-slate-900 dark:from-slate-200 dark:to-white' :
@@ -104,16 +103,16 @@ const Home: React.FC = () => {
             </h1>
           </div>
           
-          <div className="lg:col-span-4 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
-            <p className={`text-[clamp(1.25rem,2vw,1.5rem)] text-slate-500 font-medium leading-tight dark:text-slate-400 border-l-4 pl-6 transition-colors duration-500 ${
+          <div className="lg:col-span-4 space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+            <p className={`text-[clamp(1.1rem,2vw,1.5rem)] text-slate-500 font-medium leading-tight dark:text-slate-400 border-l-4 pl-4 md:pl-6 transition-colors duration-500 ${
               theme === 'blueprint' ? 'border-slate-900 dark:border-white' :
               theme === 'aura' ? 'border-blue-600 dark:border-blue-400' :
               'border-emerald-600 dark:border-emerald-400'
             }`}>
               专注于稳定、纯净生存与技术交流的 Minecraft 社区。在这里，每一行文档都为你指引归途。
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/wiki/intro" className={`flex-1 px-8 py-5 font-bold rounded-2xl flex items-center justify-between group hover:-translate-y-1 hover:shadow-2xl active:scale-[0.98] transition-all duration-300 ${
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+              <Link to="/wiki/intro" className={`flex-1 px-6 md:px-8 py-4 md:py-5 font-bold rounded-2xl flex items-center justify-between group hover:-translate-y-1 hover:shadow-2xl active:scale-[0.98] transition-all duration-300 ${
                 theme === 'blueprint' ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900' :
                 theme === 'aura' ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-500/20' :
                 'bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-emerald-500/20'
@@ -121,7 +120,7 @@ const Home: React.FC = () => {
                 开始探索
                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <a href={OFFICIAL_WEBSITE} target="_blank" rel="noreferrer" className="px-8 py-5 bg-white border border-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-50 hover:-translate-y-1 hover:border-blue-200 active:scale-[0.98] transition-all duration-300 dark:bg-slate-950 dark:border-slate-800 dark:text-white dark:hover:bg-slate-900">
+              <a href={OFFICIAL_WEBSITE} target="_blank" rel="noreferrer" className="px-6 md:px-8 py-4 md:py-5 bg-white border border-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-50 hover:-translate-y-1 hover:border-blue-200 active:scale-[0.98] transition-all duration-300 dark:bg-slate-950 dark:border-slate-800 dark:text-white dark:hover:bg-slate-900">
                 官网
                 <ArrowUpRight size={20} />
               </a>
@@ -130,7 +129,7 @@ const Home: React.FC = () => {
         </header>
 
         {/* Featured Section - Grid System */}
-        <section className={`grid grid-cols-1 lg:grid-cols-3 gap-px rounded-[2rem] md:rounded-[3rem] overflow-hidden border mb-20 md:mb-32 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 ${
+        <section className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px rounded-[2rem] md:rounded-[3rem] overflow-hidden border mb-20 md:mb-32 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 ${
           theme === 'blueprint' ? 'bg-slate-200 border-slate-200 dark:bg-slate-800 dark:border-slate-800' :
           theme === 'aura' ? 'bg-slate-200/50 border-slate-200/50 backdrop-blur-xl dark:bg-slate-800/50 dark:border-slate-800/50' :
           'bg-stone-200 border-stone-200 dark:bg-slate-800 dark:border-slate-800'
@@ -223,16 +222,16 @@ const Home: React.FC = () => {
                   </span>
                 </div>
                 <div className="text-xs md:text-sm font-black text-slate-400 uppercase tracking-widest mb-4 dark:text-slate-500 relative z-10">{item.label}</div>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 relative z-10">
-                  <div className={`flex-1 px-4 md:px-6 py-3 md:py-4 rounded-2xl border transition-colors shadow-inner ${
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 relative z-10">
+                  <div className={`flex-1 px-4 md:px-6 py-3 md:py-4 rounded-2xl border transition-colors shadow-inner flex items-center justify-center sm:justify-start ${
                     theme === 'aura' ? 'bg-white/60 dark:bg-slate-950/60 border-white/40 group-hover:border-blue-300' :
                     'bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 group-hover:border-blue-300 dark:group-hover:border-blue-700'
                   }`}>
-                    <code className="text-lg md:text-xl text-slate-900 font-mono font-bold dark:text-white">{item.ip}</code>
+                    <code className="text-base md:text-xl text-slate-900 font-mono font-bold dark:text-white break-all">{item.ip}</code>
                   </div>
                   <button 
                     onClick={() => copyToClipboard(item.ip)}
-                    className={`px-6 md:px-8 py-3 md:py-4 flex items-center justify-center gap-2 font-black rounded-2xl transition-all relative overflow-hidden active:scale-95 ${
+                    className={`px-6 md:px-8 py-3 md:py-4 flex items-center justify-center gap-2 font-black rounded-2xl transition-all relative overflow-hidden active:scale-95 flex-shrink-0 ${
                       copied === item.ip 
                         ? 'bg-emerald-500 text-white' 
                         : theme === 'blueprint' ? 'bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 shadow-lg' :
@@ -240,7 +239,7 @@ const Home: React.FC = () => {
                           'bg-emerald-600 text-white hover:bg-emerald-500 shadow-lg shadow-emerald-500/20'
                     }`}
                   >
-                    {copied === item.ip ? <Check size={20} /> : <Copy size={20} />}
+                    {copied === item.ip ? <Check size={18} /> : <Copy size={18} />}
                     <span className="text-sm md:text-base">{copied === item.ip ? '已复制' : '复制地址'}</span>
                   </button>
                 </div>
@@ -267,7 +266,7 @@ const Home: React.FC = () => {
               <span className="text-2xl font-black tracking-tighter dark:text-white uppercase">StarMC Wiki</span>
             </div>
             <p className="text-slate-500 dark:text-slate-400 font-medium max-w-sm">
-              舵星归途 StarMC 官方服务器 Wiki。致力于打造最详尽的生电生存指南。代码开源，内容共享。
+              舵星归途 StarMC 官方服务器 Wiki。在这里，每一行文档都为你指引归途。
             </p>
           </div>
           <div className="lg:col-span-3 space-y-4">

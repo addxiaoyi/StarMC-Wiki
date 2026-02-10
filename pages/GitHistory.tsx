@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { GitBranch, GitCommit, Tag, Clock, User, ExternalLink, RefreshCw, AlertCircle, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import { GitBranch, GitCommit, Tag, Clock, User, ExternalLink as ExternalLinkIcon, RefreshCw, AlertCircle, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 
 interface Commit {
   sha: string;
@@ -210,7 +210,7 @@ const GitHistory: React.FC = () => {
                         rel="noopener noreferrer"
                         className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
                       >
-                        <ExternalLink size={16} />
+                        <ExternalLinkIcon size={16} />
                         查看代码
                       </a>
                       <a 

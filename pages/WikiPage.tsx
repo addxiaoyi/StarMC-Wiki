@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Navigate, Link, useLocation } from 'react-router-dom';
-import { Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List, History, Upload, ExternalLink } from 'lucide-react';
+import { ExternalLink as ExternalLinkIcon, Calendar, Tag, ChevronRight, ArrowLeft, Share2, Edit3, Loader2, Download, Layers, List, History, Upload } from 'lucide-react';
 import { MOCK_PAGES } from '../constants';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
 import { WikiPage as WikiPageType } from '../types';
@@ -204,7 +204,7 @@ const WikiPage: React.FC = () => {
 
   return (
     <div 
-      className="max-w-6xl mx-auto px-6 py-10 lg:py-16 animate-in fade-in slide-in-from-right-4 duration-500 relative"
+      className="max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-16 animate-in fade-in slide-in-from-right-4 duration-500 relative"
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
@@ -224,34 +224,34 @@ const WikiPage: React.FC = () => {
       
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Main Content */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-8 overflow-x-auto whitespace-nowrap dark:text-slate-500">
-            <Link to="/" className="hover:text-slate-900 transition-colors dark:hover:text-white">首页</Link>
+          <nav className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-6 lg:mb-8 dark:text-slate-500 overflow-x-auto whitespace-nowrap scrollbar-none">
+            <Link to="/" className="hover:text-blue-500 transition-colors shrink-0">首页</Link>
             <ChevronRight size={12} />
-            <span className="text-slate-900 dark:text-slate-300">{displayInfo?.category || 'Wiki'}</span>
+            <span className="text-slate-600 dark:text-slate-300 shrink-0">{displayInfo?.category || 'Wiki'}</span>
             <ChevronRight size={12} />
-            <span className="text-slate-500 dark:text-slate-500">{displayInfo?.title || slug}</span>
+            <span className="text-blue-500 truncate">{displayInfo?.title || slug}</span>
           </nav>
 
           {/* Hero Header */}
-          <header className="mb-12">
-            <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-400 mb-4 dark:text-slate-500">
+          <header className="mb-8 lg:mb-12">
+            <div className="flex flex-wrap items-center gap-3 lg:gap-4 text-[10px] lg:text-xs font-mono text-slate-400 mb-4 dark:text-slate-500">
               <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded-md dark:bg-slate-900 dark:text-slate-400">
                 <Calendar size={12} />
-                最后更新: {displayInfo?.lastUpdated || '2026-02-10'}
+                <span className="whitespace-nowrap">{displayInfo?.lastUpdated || '2026-02-10'}</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-500 dark:bg-blue-900/30 dark:text-blue-400 rounded-md">
                 <Tag size={12} />
-                {displayInfo?.category || '文档'}
+                <span className="whitespace-nowrap">{displayInfo?.category || '文档'}</span>
               </div>
               {displayInfo?.icon && (
                 <div className="flex items-center gap-1.5 px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md dark:bg-indigo-950 dark:text-indigo-400">
-                  <span className="text-lg">{displayInfo.icon}</span>
+                  <span className="text-base md:text-lg">{displayInfo.icon}</span>
                 </div>
               )}
             </div>
-            <h1 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight dark:text-white">
+            <h1 className="text-3xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight dark:text-white break-words mb-4">
               {displayInfo?.title || slug}
             </h1>
           </header>
@@ -286,11 +286,11 @@ const WikiPage: React.FC = () => {
           )}
 
           {/* Page Footer / Controls */}
-          <footer className="mt-20 pt-8 border-t border-slate-100 flex flex-wrap items-center justify-between gap-6 dark:border-slate-800">
-            <div className="flex items-center gap-4">
+          <footer className="mt-16 md:mt-20 pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6 dark:border-slate-800">
+            <div className="flex flex-wrap items-center gap-2 md:gap-3">
               <Link 
                 to="/" 
-                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:bg-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
+                className="flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-black text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:bg-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
               >
                 <ArrowLeft size={16} />
                 返回首页
@@ -326,10 +326,10 @@ const WikiPage: React.FC = () => {
                         URL.revokeObjectURL(url);
                       });
                   }}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all dark:bg-indigo-950 dark:text-indigo-400 dark:hover:bg-indigo-900"
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all dark:bg-indigo-950 dark:text-indigo-400 dark:hover:bg-indigo-900"
                 >
                   <Download size={16} />
-                  下载此模板
+                  下载模板
                 </button>
               )}
               
@@ -337,54 +337,54 @@ const WikiPage: React.FC = () => {
                 href="https://codeberg.org/addxiaoyi/starmc-wiki-page/src/branch/main/public/content/wiki" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-all dark:bg-emerald-950 dark:text-emerald-400 dark:hover:bg-emerald-900"
+                className="flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-black text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-all dark:bg-emerald-950 dark:text-emerald-400 dark:hover:bg-emerald-900"
               >
                 <Upload size={16} />
-                上传新文档
+                上传文档
               </a>
             </div>
             
-            <div className="flex items-center gap-2">
-              <button 
-                className="p-2 text-slate-400 hover:text-slate-900 transition-colors relative dark:hover:text-white" 
-                title="分享"
-                onClick={handleShare}
-              >
-                <Share2 size={20} />
-                {copied && (
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-700 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap dark:bg-slate-600">
-                    已复制!
-                  </span>
-                )}
-              </button>
-              
+            <div className="flex items-center justify-between sm:justify-end gap-2">
               <div className="flex items-center gap-1">
-                  <Link 
-                    to="/history"
-                    className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
-                    title="查看全站变更历史"
-                  >
-                    <History size={20} />
-                  </Link>
-                  <a 
-                    href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/commits/branch/main/public/content/wiki/${slug}.md`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
-                    title="查看此页源码历史"
-                  >
-                    <ExternalLink size={20} />
-                  </a>
-                </div>
+                <button 
+                  className="p-2 text-slate-400 hover:text-slate-900 transition-colors relative dark:hover:text-white" 
+                  title="分享"
+                  onClick={handleShare}
+                >
+                  <Share2 size={18} />
+                  {copied && (
+                    <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-700 text-white text-[10px] px-2 py-1 rounded-md whitespace-nowrap dark:bg-slate-600">
+                      已复制!
+                    </span>
+                  )}
+                </button>
+                
+                <Link 
+                  to="/history"
+                  className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
+                  title="全站变更历史"
+                >
+                  <History size={18} />
+                </Link>
+                <a 
+                  href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/commits/branch/main/public/content/wiki/${slug}.md`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="p-2 text-slate-400 hover:text-slate-900 transition-colors dark:hover:text-white"
+                  title="源码历史"
+                >
+                  <ExternalLinkIcon size={18} />
+                </a>
+              </div>
 
               <a 
                 href={`https://codeberg.org/addxiaoyi/starmc-wiki-page/src/branch/main/public/content/wiki/${slug}.md`} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 ml-2 px-4 py-2 text-sm font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all dark:bg-blue-950 dark:text-blue-400 dark:hover:bg-blue-900"
+                className="flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-black text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all dark:bg-blue-950 dark:text-blue-400 dark:hover:bg-blue-900"
               >
                 <Edit3 size={16} />
-                编辑此页 (MD)
+                编辑 (MD)
               </a>
             </div>
           </footer>
