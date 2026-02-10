@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* 强制 Tailwind v4 使用 .dark 类名而不是媒体查询来切换暗色模式 */
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;

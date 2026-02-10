@@ -164,11 +164,14 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const root = document.documentElement;
+    // 强制同步颜色方案到浏览器，防止浏览器误以为只切换了“系统主题”
     if (isDark) {
       root.classList.add('dark');
+      root.style.colorScheme = 'dark';
       localStorage.setItem('theme', 'dark');
     } else {
       root.classList.remove('dark');
+      root.style.colorScheme = 'light';
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
