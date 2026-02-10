@@ -7,8 +7,8 @@ import { NAVIGATION, SERVER_NAME, OFFICIAL_WEBSITE } from '../constants';
 import { search as doSearch } from '../services/searchEngine';
 
 export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggleDark: (e: React.MouseEvent) => void }> = ({ onOpenSearch, isDark, toggleDark }) => (
-    <header className="sticky top-0 z-[100] w-full border-b border-slate-200 bg-white dark:bg-slate-950 dark:border-slate-800">
-      <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-3">
+    <header className="sticky top-0 z-[100] w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:bg-slate-950/80 dark:border-slate-800">
+      <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-1.5">
             <div className="bg-slate-900 text-white p-1.5 rounded-lg dark:bg-white dark:text-slate-900">

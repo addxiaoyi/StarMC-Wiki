@@ -29,7 +29,16 @@
   }
 
   body {
-    @apply bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300;
+    @apply bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300 antialiased;
+    font-size: clamp(0.875rem, 0.5vw + 0.75rem, 1rem);
+    line-height: 1.6;
+  }
+
+  /* 响应式容器间距优化 */
+  .max-w-8xl {
+    max-width: 90rem;
+    padding-left: clamp(1rem, 5vw, 2rem);
+    padding-right: clamp(1rem, 5vw, 2rem);
   }
 
   mark {
