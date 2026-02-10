@@ -9,34 +9,34 @@ import { search as doSearch } from '../services/searchEngine';
 export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggleDark: () => void }> = ({ onOpenSearch, isDark, toggleDark }) => (
   <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:bg-slate-950/80 dark:border-slate-800">
     <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-shrink-0">
         <Link to="/" className="flex items-center gap-2 group">
           <div className="bg-slate-900 text-white p-1.5 rounded-lg transition-transform group-hover:scale-105 dark:bg-white dark:text-slate-900">
             <Terminal size={20} />
           </div>
-          <span className="text-lg font-bold tracking-tight dark:text-white">
-            {SERVER_NAME} <span className="text-slate-400 font-normal">Wiki</span>
-            <span className="ml-2 px-1.5 py-0.5 text-[10px] bg-blue-100 text-blue-600 rounded-full font-bold uppercase tracking-wider dark:bg-blue-900 dark:text-blue-300">MD-v2</span>
+          <span className="text-base sm:text-lg font-bold tracking-tight dark:text-white">
+            舵星归途
           </span>
         </Link>
       </div>
 
-      <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4">
+      <div className="flex items-center justify-end gap-1.5 sm:gap-2">
         <button
           onClick={onOpenSearch}
-          className="md:hidden flex items-center gap-2 px-3 py-1.5 text-slate-400 bg-slate-50 border border-slate-200 rounded-full hover:text-slate-600 hover:bg-slate-100 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-500 dark:hover:text-slate-300 dark:hover:bg-slate-800 w-full max-w-[120px]"
+          className="md:hidden flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-100 rounded-full hover:bg-blue-100 transition-all dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50 dark:hover:bg-blue-900/50"
           aria-label="Search"
         >
-          <Search size={16} />
-          <span className="text-xs font-medium">搜索文档...</span>
+          <Search size={18} />
+          <span className="text-xs font-bold">搜索</span>
         </button>
         <button
           onClick={toggleDark}
-          className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
+          className="p-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
           aria-label="Toggle Theme"
         >
-          {isDark ? <Sun size={20} /> : <Moon size={20} />}
+          {isDark ? <Sun size={22} /> : <Moon size={22} />}
         </button>
+        
         <button 
           onClick={onOpenSearch}
           className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-slate-400 border border-slate-200 rounded-full hover:border-slate-300 transition-colors bg-slate-50 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700"
@@ -46,16 +46,16 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
           <kbd className="ml-2 font-sans text-xs bg-white px-1.5 py-0.5 rounded border border-slate-200 dark:bg-slate-800 dark:border-slate-700">⌘K</kbd>
         </button>
         
-        <div className="h-6 w-px bg-slate-200 mx-2 dark:bg-slate-800" />
+        <div className="hidden sm:block h-6 w-px bg-slate-200 mx-1 dark:bg-slate-800" />
         
         <a 
           href={OFFICIAL_WEBSITE} 
           target="_blank" 
           rel="noreferrer" 
-          className="text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1.5 dark:text-slate-400 dark:hover:text-white"
+          className="hidden sm:flex text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors items-center gap-1.5 dark:text-slate-400 dark:hover:text-white"
         >
           <ExternalLink size={14} />
-          官方网站
+          官网
         </a>
       </div>
     </div>
@@ -238,6 +238,16 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           {children}
         </main>
       </div>
+
+      {!isAdminPage && (
+        <button
+          onClick={() => setSearchOpen(true)}
+          className="md:hidden fixed bottom-6 right-6 z-50 p-4 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all active:scale-95 flex items-center justify-center"
+          aria-label="Floating Search"
+        >
+          <Search size={24} />
+        </button>
+      )}
 
       {isSearchOpen && (
         <div 
