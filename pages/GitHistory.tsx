@@ -15,7 +15,7 @@ interface Commit {
 }
 
 const REPO_OWNER = 'addxiaoyi';
-const REPO_NAME = 'starmc-wiki-main';
+const REPO_NAME = 'StarMC-Wiki';
 const DEPLOY_URL = 'https://addxiaoyi.codeberg.page/starmc-wiki-page/';
 
 const GitHistory: React.FC = () => {
