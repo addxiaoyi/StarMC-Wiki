@@ -15,8 +15,51 @@ const WikiPage: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [meta, setMeta] = useState<Partial<WikiPageType>>({});
 
+  const [isDragging, setIsDragging] = useState(false);
+
   // 基础信息
   const basePageInfo = MOCK_PAGES.find(p => p.slug === slug);
+
+  // 处理文件上传
+  const handleFileUpload = (file: File) => {
+    if (!file.name.endsWith('.md')) {
+      alert('仅支持 .md 格式的文档提交');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      const submissions = JSON.parse(localStorage.getItem('wiki_pending_submissions') || '[]');
+      const newSubmission = {
+        id: Date.now(),
+        filename: file.name,
+        content: content,
+        status: 'pending',
+        timestamp: new Date().toISOString()
+      };
+      
+      localStorage.setItem('wiki_pending_submissions', JSON.stringify([...submissions, newSubmission]));
+      alert('文档已提交！请等待管理员审核。');
+    };
+    reader.readAsText(file);
+  };
+
+  const onDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const onDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileUpload(file);
+  };
 
   // 解析 MD 中的元数据
   const parseMetadata = (text: string) => {
@@ -160,7 +203,25 @@ const WikiPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-10 lg:py-16 animate-in fade-in slide-in-from-right-4 duration-500">
+    <div 
+      className="max-w-6xl mx-auto px-6 py-10 lg:py-16 animate-in fade-in slide-in-from-right-4 duration-500 relative"
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+    >
+      {/* 拖拽上传覆盖层 */}
+      {isDragging && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-blue-600/20 backdrop-blur-sm border-4 border-dashed border-blue-500 m-4 rounded-[2.5rem] pointer-events-none animate-in fade-in duration-200">
+          <div className="bg-white p-8 rounded-[2rem] shadow-2xl flex flex-col items-center gap-4 dark:bg-slate-900">
+            <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center dark:bg-blue-900/30 dark:text-blue-400">
+              <Upload size={32} />
+            </div>
+            <p className="text-xl font-black text-slate-900 dark:text-white">松开以提交新文档</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">文件将直接发送至管理员审核后台</p>
+          </div>
+        </div>
+      )}
+      
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Main Content */}
         <div className="flex-1 min-w-0">
