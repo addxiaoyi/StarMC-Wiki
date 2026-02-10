@@ -21,13 +21,14 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
         </Link>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4">
         <button
           onClick={onOpenSearch}
-          className="md:hidden p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
+          className="md:hidden flex items-center gap-2 px-3 py-1.5 text-slate-400 bg-slate-50 border border-slate-200 rounded-full hover:text-slate-600 hover:bg-slate-100 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-500 dark:hover:text-slate-300 dark:hover:bg-slate-800 w-full max-w-[120px]"
           aria-label="Search"
         >
-          <Search size={20} />
+          <Search size={16} />
+          <span className="text-xs font-medium">搜索文档...</span>
         </button>
         <button
           onClick={toggleDark}
@@ -109,19 +110,24 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void; onOpenSea
       ${isOpen ? 'translate-x-0' : '-translate-x-full'}
     `}>
       <div className="h-full overflow-y-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8 px-3">
-          <div className="md:hidden flex items-center gap-4">
-            <button 
-              onClick={() => {
-                onOpenSearch();
-                onClose();
-              }}
-              className="p-2 -ml-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
-            >
-              <Search size={20} />
+        <div className="flex flex-col gap-4 mb-8">
+          <button 
+            onClick={() => {
+              onOpenSearch();
+              onClose();
+            }}
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-500 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-all dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800"
+          >
+            <Search size={18} />
+            <span>搜索文档...</span>
+          </button>
+          
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest dark:text-slate-500">菜单导航</span>
+            <button onClick={onClose} className="md:hidden dark:text-white p-2 -mr-2 text-slate-500 hover:bg-slate-100 rounded-xl dark:hover:bg-slate-800">
+              <X size={24} />
             </button>
           </div>
-          <button onClick={onClose} className="md:hidden dark:text-white p-2 -mr-2 text-slate-500 hover:bg-slate-100 rounded-xl dark:hover:bg-slate-800"><X size={24} /></button>
         </div>
         
         <nav className="space-y-8">
@@ -213,23 +219,22 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} onOpenSearch={() => setSearchOpen(true)} />}
         
         <main className={`flex-1 min-w-0 bg-white dark:bg-slate-950 ${isAdminPage ? 'w-full px-4' : ''}`}>
-          {!isAdminPage && (
-            <div className="md:hidden p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div className="md:hidden p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white/50 backdrop-blur-sm dark:bg-slate-950/50">
               <button 
                 onClick={() => setSidebarOpen(true)}
-                className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors dark:text-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
               >
-                <Menu size={20} />
-                目录
+                <Menu size={18} />
+                目录导航
               </button>
               <button 
                 onClick={() => setSearchOpen(true)}
-                className="p-2 text-slate-500 dark:text-slate-400"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50"
               >
                 <Search size={18} />
+                搜索
               </button>
             </div>
-          )}
           {children}
         </main>
       </div>
