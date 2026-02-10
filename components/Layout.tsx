@@ -14,18 +14,18 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
             <div className="bg-slate-900 text-white p-1.5 rounded-lg dark:bg-white dark:text-slate-900">
               <Terminal size={18} />
             </div>
-            <span className="text-sm font-bold dark:text-white whitespace-nowrap">
+            <span className="text-sm font-black dark:text-white whitespace-nowrap overflow-hidden">
               舵星归途
             </span>
           </Link>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           {/* 移动端搜索按钮 - 强制显示 */}
           <button
             onClick={onOpenSearch}
             className="flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-200 rounded-full dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700 md:hidden"
-            style={{ display: 'flex' }}
+            style={{ display: 'flex !important' }}
           >
             <Search size={16} />
             <span className="text-xs font-black">搜索</span>
@@ -34,7 +34,7 @@ export const Header: React.FC<{ onOpenSearch: () => void; isDark: boolean; toggl
           <button
             onClick={toggleDark}
             className="p-2 text-slate-600 bg-slate-100 rounded-lg dark:text-slate-300 dark:bg-slate-800"
-            style={{ display: 'block' }}
+            style={{ display: 'block !important' }}
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
