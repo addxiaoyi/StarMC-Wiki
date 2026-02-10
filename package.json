@@ -1,5 +1,5 @@
 {
-  "name": "copy-of-舵星归途-starmc-wiki",
+  "name": "starmc-wiki",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "deploy": "gh-pages -d dist -b pages"
+    "deploy": "npm run build && gh-pages -d dist -b pages"
   },
   "dependencies": {
     "@google/genai": "^1.34.0",

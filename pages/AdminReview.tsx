@@ -140,20 +140,24 @@ const AdminReview: React.FC = () => {
             <ShieldCheck size={24} />
           </div>
           <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">内容审核后台</h1>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+              内容审核后台
+              <span className="px-2 py-0.5 bg-slate-900 text-white text-[10px] rounded-md">V2.0-READY</span>
+            </h1>
             <p className="text-slate-500 font-medium">管理用户提交的文档贡献申请</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="px-4 py-2 bg-slate-100 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-widest">
-            Admin: {username}
+          <div className="px-4 py-2 bg-slate-100 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-widest border border-slate-200">
+            管理员: {username || 'add'}
           </div>
           <button 
             onClick={handleLogout}
-            className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
-            title="登出"
+            className="px-6 py-3 bg-rose-600 text-white hover:bg-rose-700 rounded-xl transition-all flex items-center gap-2 font-black text-sm shadow-lg shadow-rose-200 animate-pulse"
+            title="点击退出管理模式"
           >
-            <X size={20} />
+            <X size={18} strokeWidth={3} />
+            退出登录 (EXIT)
           </button>
         </div>
       </div>
@@ -242,9 +246,8 @@ const AdminReview: React.FC = () => {
             ))}
           </div>
         )}
-  </div>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 export default AdminReview;

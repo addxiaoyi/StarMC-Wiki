@@ -103,7 +103,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [total, setTotal] = useState(0);
   const pageSize = 20;
 
-  const isAdminPage = location.pathname.includes('/admin');
+  const isAdminPage = location.pathname.toLowerCase().includes('admin');
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -116,12 +116,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header onOpenSearch={() => setSearchOpen(true)} />
+      {!isAdminPage && <Header onOpenSearch={() => setSearchOpen(true)} />}
       
       <div className="flex-1 flex flex-col md:flex-row max-w-8xl mx-auto w-full">
         {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />}
         
-        <main className={`flex-1 min-w-0 bg-white ${isAdminPage ? 'w-full' : ''}`}>
+        <main className={`flex-1 min-w-0 bg-white ${isAdminPage ? 'w-full px-4' : ''}`}>
           {!isAdminPage && (
             <div className="md:hidden p-4 border-b border-slate-100">
               <button 
