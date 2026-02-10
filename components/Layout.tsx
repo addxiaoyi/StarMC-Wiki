@@ -18,7 +18,7 @@ export const Header: React.FC<{
           {/* 移动端菜单按钮 */}
           <button
             onClick={onToggleSidebar}
-            className="p-2 -ml-2 text-slate-600 hover:bg-slate-100 rounded-lg lg:hidden dark:text-slate-300 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 -ml-2 text-slate-600 hover:bg-slate-100 rounded-lg hidden dark:text-slate-300 dark:hover:bg-slate-800 transition-colors"
             aria-label="Toggle Menu"
           >
             <Menu size={20} />
@@ -46,7 +46,7 @@ export const Header: React.FC<{
           {/* 移动端搜索按钮 */}
           <button
             onClick={(e) => { e.preventDefault(); onOpenSearch(); }}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-200 rounded-full dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700 lg:hidden transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-blue-600 bg-blue-50 border border-blue-200 rounded-full dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700 hidden transition-all active:scale-95"
           >
             <Search size={14} />
             <span className="text-xs font-black">搜索</span>
@@ -281,6 +281,24 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         {!isAdminPage && <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} onOpenSearch={() => setSearchOpen(true)} />}
         
         <main className={`flex-1 min-w-0 bg-white dark:bg-slate-950 ${isAdminPage ? 'w-full px-4' : ''}`}>
+          {!isAdminPage && (
+            <div className="lg:hidden p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-white/50 backdrop-blur-sm dark:bg-slate-950/50 sticky top-0 z-30">
+              <button 
+                onClick={() => setSidebarOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors dark:text-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
+              >
+                <Menu size={18} />
+                目录导航
+              </button>
+              <button 
+                onClick={() => setSearchOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50"
+              >
+                <Search size={18} />
+                搜索
+              </button>
+            </div>
+          )}
           {children}
         </main>
       </div>

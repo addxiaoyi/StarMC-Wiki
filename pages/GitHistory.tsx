@@ -118,37 +118,14 @@ const GitHistory: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-            <button 
-              onClick={() => setFilter('all')}
-              className={`px-4 py-1.5 text-sm font-bold rounded-lg transition-all ${filter === 'all' ? 'bg-white text-blue-600 shadow-sm dark:bg-slate-700 dark:text-blue-400' : 'text-slate-500 hover:text-slate-700'}`}
-            >
-              全部
-            </button>
-            <button 
-              onClick={() => setFilter('commit')}
-              className={`px-4 py-1.5 text-sm font-bold rounded-lg transition-all ${filter === 'commit' ? 'bg-white text-blue-600 shadow-sm dark:bg-slate-700 dark:text-blue-400' : 'text-slate-500 hover:text-slate-700'}`}
-            >
-              提交
-            </button>
-            <button 
-              onClick={() => setFilter('merge')}
-              className={`px-4 py-1.5 text-sm font-bold rounded-lg transition-all ${filter === 'merge' ? 'bg-white text-blue-600 shadow-sm dark:bg-slate-700 dark:text-blue-400' : 'text-slate-500 hover:text-slate-700'}`}
-            >
-              合并
-            </button>
-          </div>
-          
-          <button 
-            onClick={() => fetchHistory()}
-            disabled={loading}
-            className="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all dark:bg-blue-900/30 dark:text-blue-400 disabled:opacity-50"
-            title="手动刷新"
-          >
-            <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
-          </button>
-        </div>
+        <button 
+          onClick={() => fetchHistory()}
+          disabled={loading}
+          className="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-all dark:bg-blue-900/30 dark:text-blue-400 disabled:opacity-50"
+          title="手动刷新"
+        >
+          <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+        </button>
       </div>
 
       {error ? (
