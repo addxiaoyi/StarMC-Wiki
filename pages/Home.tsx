@@ -28,26 +28,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 selection:bg-blue-100 dark:selection:bg-blue-900/30 transition-colors duration-500">
-      {/* 谷歌杂志风格 Header 引导 */}
       <div className="max-w-7xl mx-auto px-6 pt-12 lg:pt-20">
-        <div className="md:hidden mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
-          <button 
-            className="w-full p-6 bg-slate-50 border border-slate-200 rounded-3xl text-slate-900 font-bold flex flex-col items-center justify-center gap-3 dark:bg-slate-900 dark:border-slate-800 dark:text-white group active:scale-[0.98] transition-all"
-            onClick={() => {
-              const floatingSearch = document.querySelector('[style*="zIndex: 999"] button') as HTMLButtonElement;
-              floatingSearch?.click();
-            }}
-          >
-            <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200 dark:shadow-none">
-              <Search size={24} />
-            </div>
-            <div className="text-center">
-              <p className="text-lg">准备好探索了吗？</p>
-              <p className="text-sm text-slate-500 font-medium">点击底部蓝色按钮开始搜索</p>
-            </div>
-          </button>
-        </div>
-
         {/* Hero Section - Magazine Layout */}
         <header className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-24 lg:mb-40">
           <div className="lg:col-span-8 space-y-8">

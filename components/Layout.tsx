@@ -244,25 +244,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </main>
       </div>
 
-      {!isAdminPage && (
-        <div 
-          className="md:hidden fixed bottom-10 left-0 right-0 z-[999] px-4 pointer-events-none"
-          style={{ position: 'fixed', bottom: '40px', zIndex: 999 }}
-        >
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="w-full max-w-md mx-auto flex items-center gap-3 px-6 py-5 bg-blue-600 text-white rounded-2xl shadow-[0_20px_40px_rgba(37,99,235,0.6)] active:scale-95 transition-all pointer-events-auto"
-            style={{ pointerEvents: 'auto', display: 'flex', backgroundColor: '#2563eb' }}
-          >
-            <Search size={24} className="animate-pulse" />
-            <span className="text-lg font-black tracking-wider">点击此处搜索文档</span>
-            <div className="ml-auto bg-white/20 px-2 py-1 rounded text-[10px] font-black border border-white/30">
-              SEARCH
-            </div>
-          </button>
-        </div>
-      )}
-
       {isSearchOpen && (
         <div 
           className="fixed inset-0 z-[60] flex items-start justify-center pt-4 sm:pt-20 px-4 bg-slate-900/40 backdrop-blur-sm dark:bg-black/60"
