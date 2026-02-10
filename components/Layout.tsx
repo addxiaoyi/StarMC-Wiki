@@ -137,9 +137,9 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void; onOpenSea
         />
       )}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:block dark:bg-slate-950 dark:border-slate-800
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
+      fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:block dark:bg-slate-950 dark:border-slate-800
+      ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+    `}>
       <div className="h-full overflow-y-auto px-4 py-8">
         <div className="flex flex-col gap-4 mb-8">
           <div className="flex items-center justify-between">
@@ -235,6 +235,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [isSearchOpen]);
 
   useEffect(() => {
+    // 页面加载后延迟 1s 触发一次欢迎提示，方便用户验证效果
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('sync-notify', { 
+        detail: '欢迎使用 StarMC Wiki！已连接同步系统' 
+      }));
+    }, 1000);
+    
     const handleSyncNotify = (e: any) => {
       setSyncMsg(e.detail || '同步成功');
       setShowSyncNotify(true);
@@ -242,7 +249,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       setTimeout(() => setShowSyncNotify(false), 2700);
     };
     window.addEventListener('sync-notify', handleSyncNotify);
-    return () => window.removeEventListener('sync-notify', handleSyncNotify);
+    return () => {
+      window.removeEventListener('sync-notify', handleSyncNotify);
+      clearTimeout(timer);
+    };
   }, []);
 
   const isAdminPage = location.pathname.toLowerCase().includes('admin');

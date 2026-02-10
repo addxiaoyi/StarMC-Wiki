@@ -247,7 +247,7 @@ const WikiPage: React.FC = () => {
               </div>
               {displayInfo?.icon && (
                 <div className="flex items-center gap-1.5 px-2 py-1 bg-indigo-50 text-indigo-600 rounded-md dark:bg-indigo-950 dark:text-indigo-400">
-                  <span className="text-base md:text-lg">{displayInfo.icon}</span>
+                  <span className="text-base lg:text-lg">{displayInfo.icon}</span>
                 </div>
               )}
             </div>
@@ -268,7 +268,7 @@ const WikiPage: React.FC = () => {
                 <Layers size={20} className="text-indigo-500" />
                 相关子页面
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {subPages.map(page => (
                   <Link 
                     key={page.slug}
@@ -286,8 +286,8 @@ const WikiPage: React.FC = () => {
           )}
 
           {/* Page Footer / Controls */}
-          <footer className="mt-16 md:mt-20 pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6 dark:border-slate-800">
-            <div className="flex flex-wrap items-center gap-2 md:gap-3">
+          <footer className="mt-16 lg:mt-20 pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6 dark:border-slate-800">
+            <div className="flex flex-wrap items-center gap-2 lg:gap-3">
               <Link 
                 to="/" 
                 className="flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-black text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-all dark:text-slate-400 dark:bg-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
