@@ -67,24 +67,24 @@ const Home: React.FC = () => {
         )}
       </div>
 
-      <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 lg:pt-20">
+      <div className="relative z-10 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 lg:pt-20">
         {/* Hero Section - Magazine Layout */}
-        <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-end mb-12 md:mb-24 lg:mb-40">
-          <div className="lg:col-span-8 space-y-4 md:space-y-8">
-            <div className={`inline-flex items-center gap-2 md:gap-3 px-2 md:px-3 py-1 rounded-full animate-in fade-in duration-1000 ${
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end mb-12 lg:mb-24 lg:mb-40">
+          <div className="lg:col-span-8 space-y-4 lg:space-y-8">
+            <div className={`inline-flex items-center gap-2 lg:gap-3 px-2 lg:px-3 py-1 rounded-full animate-in fade-in duration-1000 ${
               theme === 'blueprint' ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border border-slate-800' :
               theme === 'aura' ? 'bg-blue-50 border border-blue-100 dark:bg-blue-950/30 dark:border-blue-900/50' :
               'bg-emerald-100 border-2 border-emerald-500/20 dark:bg-emerald-950/30 dark:border-emerald-500/50'
             }`}>
-              <span className="relative flex h-1.5 w-1.5 md:h-2 md:w-2">
+              <span className="relative flex h-1.5 w-1.5 lg:h-2 lg:w-2">
                 <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
                   theme === 'voxel' ? 'bg-emerald-400' : 'bg-blue-400'
                 }`}></span>
-                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 md:h-2 md:w-2 ${
+                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 lg:h-2 lg:w-2 ${
                   theme === 'voxel' ? 'bg-emerald-500' : 'bg-blue-500'
                 }`}></span>
               </span>
-              <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] ${
+              <span className={`text-[8px] lg:text-[10px] font-black uppercase tracking-[0.2em] ${
                 theme === 'blueprint' ? 'text-inherit' :
                 theme === 'aura' ? 'text-blue-700 dark:text-blue-400' :
                 'text-emerald-700 dark:text-emerald-400'

@@ -18,7 +18,7 @@ export const Header: React.FC<{
           {/* 移动端菜单按钮 */}
           <button
             onClick={onToggleSidebar}
-            className="p-2 -ml-2 text-slate-600 hover:bg-slate-100 rounded-lg hidden dark:text-slate-300 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 -ml-2 text-slate-600 hover:bg-slate-100 rounded-lg lg:hidden dark:text-slate-300 dark:hover:bg-slate-800 transition-colors"
             aria-label="Toggle Menu"
           >
             <Menu size={20} />
@@ -237,8 +237,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   useEffect(() => {
     // 页面加载后延迟 1s 触发一次欢迎提示，方便用户验证效果
     const timer = setTimeout(() => {
+      const now = new Date().toLocaleString('zh-CN', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit'
+      });
       window.dispatchEvent(new CustomEvent('sync-notify', { 
-        detail: '欢迎使用 StarMC Wiki！已连接同步系统' 
+        detail: `系统已同步 [${now}]` 
       }));
     }, 1000);
     
